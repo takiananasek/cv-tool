@@ -5,25 +5,27 @@
     <mat-icon>delete</mat-icon>
   </button>
   <div class="py-1">
-    <form class="text-center pt-2">
-      @for(item of listItems; track item.id){
-      <li class="flex flex-col items-center border-gray-700">
-        <mat-form-field class="w-full">
-          <mat-label>Title</mat-label>
-          <input matInput />
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>Text</mat-label>
-          <input matInput placeholder="This is a sample title" />
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>Url</mat-label>
-          <input matInput placeholder="This is a sample title" />
-        </mat-form-field>
-        <button (click)="deleteProjectItem(item)" mat-icon-button>
-          <mat-icon>delete</mat-icon>
-        </button>
-      </li>
+    <form [formGroup] = "listForm" class="text-center pt-2">
+      @for(item of listItems(); track item.id){
+        <div [formGroupName] = "item.id">
+          <li class="flex flex-col items-center border-gray-700">
+            <mat-form-field class="w-full">
+              <mat-label>Title</mat-label>
+              <input formControlName = "title"  matInput />
+            </mat-form-field>
+            <mat-form-field class="w-full">
+              <mat-label>Text</mat-label>
+              <input formControlName = "description" matInput placeholder="This is a sample title" />
+            </mat-form-field>
+            <mat-form-field class="w-full">
+              <mat-label>Url</mat-label>
+              <input formControlName = "url" matInput placeholder="This is a sample title" />
+            </mat-form-field>
+            <button (click)="deleteProjectItem(item)" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        </div>
       }
     </form>
     <button (click)="addProjectItem()" mat-icon-button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspace-base-element.component';
 import { WorkspaceContext } from '../../../../services/workspace-context';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,9 +22,10 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
   styleUrl: './workspace-project-links.component.scss',
 })
 export class WorkspaceProjectLinksComponent extends WorkspaceBaseElementComponent implements OnInit {
-  listItems: { id: number; title: string, description: string, url: string }[] = [];
+
+  listItems: WritableSignal<{ id: number; title: string, description: string, url: string }[]> = signal([]);
   ID_COUNTER: number = 0;
-  profileLinksForm!: FormGroup;
+  listForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
 
   constructor(public workspaceContext: WorkspaceContext) {
@@ -32,35 +33,49 @@ export class WorkspaceProjectLinksComponent extends WorkspaceBaseElementComponen
   }
 
    ngOnInit(): void {
-    this.profileLinksForm = this.formBuilder.group({
-      title: new FormControl('', Validators.required),
-      text: new FormControl('', Validators.required)
-    });
-  this.onChanges();
+    this.listForm = this.formBuilder.group({});
+    this.onChanges();
   }
 
   onChanges(): void {
-    this.profileLinksForm.valueChanges.subscribe(val => {
+    this.listForm.valueChanges.subscribe(val => {
       this.workspaceContext.valid.update(() => true);
-      if(this.profileLinksForm.valid){
-        //prepare data and update context
+      if(this.listForm.valid){
+         console.log(val);
       }
-      this.workspaceContext.valid.update((curr) => (curr && this.profileLinksForm.valid));
+      this.workspaceContext.valid.update((curr) => (curr && this.listForm.valid));
     });
   }
 
+  toFormGroup(listEntries: { id: number; text: string }[]) {
+    const group: any = {};
+    group['title'] = new FormControl('', Validators.required)
+    group['subtitle'] = new FormControl('', Validators.required)
+    listEntries.forEach(entry => {
+      group[entry.id] = new FormControl(entry.text || '', Validators.required)
+    });
+    return new FormGroup(group);
+  }
+
   addProjectItem() {
-    this.listItems.push({
+    this.listForm.addControl((this.ID_COUNTER).toString(),new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      url: new FormControl('', Validators.required),
+    }));
+
+    this.listItems.set([...(this.listItems()),{
       id: this.ID_COUNTER,
       title: '',
       description: '',
       url: ''
-    });
+    }]);
     this.ID_COUNTER++;
   }
 
   deleteProjectItem(item: { id: number; title: string, description: string, url: string }) {
-    this.listItems = this.listItems.filter((li) => li.id !== item.id);
+    this.listForm.removeControl(item.id.toString());
+    this.listItems.set(this.listItems().filter((li) => li.id !== item.id));
     this.ID_COUNTER--;
   }
 

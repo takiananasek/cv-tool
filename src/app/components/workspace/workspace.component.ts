@@ -19,6 +19,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
+import { WorkspaceContext } from '../../services/workspace-context';
+import { MatDialog } from '@angular/material/dialog';
+import { InvalidFormDialogComponent } from '../dialog/invalid-form-dialog/invalid-form-dialog.component';
 
 @Component({
   selector: 'app-workspace',
@@ -47,8 +50,10 @@ export class WorkspaceComponent implements AfterViewInit {
   });
 
   mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public workspaceContext: WorkspaceContext,
+    public dialog: MatDialog) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -63,9 +68,28 @@ export class WorkspaceComponent implements AfterViewInit {
     this.opened.update((c) => !c);
   }
 
-  private _mobileQueryListener: () => void;
+  onSaveClick(){
+    if(this.workspaceContext.valid()){
+
+    }
+    else{
+      //display invalid popup
+      this.openDialog();
+    }
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(InvalidFormDialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+  
 }

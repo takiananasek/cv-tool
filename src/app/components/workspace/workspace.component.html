@@ -1,9 +1,12 @@
 <div class="flex flex-col h-screen" [ngStyle]="{ overflow: overflow() }">
     <div class="flex flex-col w-[100%]">
         <app-navbar></app-navbar>
-        <mat-toolbar color="black">
+        <mat-toolbar class = "flex justify-between" color="black">
             <button mat-icon-button (click)="toggeNavBar()">
                 <mat-icon>menu</mat-icon>
+            </button>
+            <button mat-button (click)="onSaveClick()">
+                Save and Submit
             </button>
         </mat-toolbar>
     </div>

@@ -26,7 +26,6 @@ export class WorkspaceListElementComponent extends WorkspaceBaseElementComponent
   ID_COUNTER: number = 0;
 
   listForm!: FormGroup;
-  entriesForm!: FormGroup;
 
   private formBuilder = inject(FormBuilder);
   
