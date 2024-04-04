@@ -1,11 +1,12 @@
-
-<form class="text-center pt-2">
+<form [formGroup] = "textFieldForm" class="pt-2">
+  <button
+        (click)=deleteElement($event) mat-icon-button><mat-icon>delete</mat-icon></button>
     <mat-form-field class="w-full">
       <mat-label>Title</mat-label>
-      <input matInput placeholder="This is a sample title">
+      <input formControlName="title" matInput placeholder="This is a sample title">
     </mat-form-field>
     <mat-form-field class="w-full">
       <mat-label>Text</mat-label>
-      <input matInput placeholder="This is a sample title">
+      <input matInput formControlName="text" placeholder="This is a sample text">
     </mat-form-field>
-  </form>
+</form>

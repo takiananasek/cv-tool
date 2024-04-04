@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { WorkspaceContext } from '../../../../services/workspace-context';
 import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspace-base-element.component';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-workspace-contact-element',
+  selector: 'app-workspace-empty-element',
   standalone: true,
   imports: [
     MatIconModule,
@@ -16,12 +16,22 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    ReactiveFormsModule
   ],
-  templateUrl: './workspace-contact-element.component.html',
-  styleUrl: './workspace-contact-element.component.scss',
+  templateUrl: './workspace-empty-element.component.html',
+  styleUrl: './workspace-empty-element.component.scss',
 })
-export class WorkspaceContactElementComponent extends WorkspaceBaseElementComponent {
+export class WorkspaceEmptyElementComponent extends WorkspaceBaseElementComponent implements OnInit{
+
   constructor(public workspaceContext: WorkspaceContext) {
     super(workspaceContext);
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+  deleteElement(event: any) {
+    this.workspaceContext.deleteElement(this.unique_key);
   }
 }

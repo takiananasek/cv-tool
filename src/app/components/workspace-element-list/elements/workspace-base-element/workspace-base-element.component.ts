@@ -13,4 +13,5 @@ export class WorkspaceBaseElementComponent {
 
   constructor(workspaceContext: WorkspaceContext){
   }
+
 }

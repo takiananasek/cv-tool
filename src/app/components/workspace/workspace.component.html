@@ -1,18 +1,24 @@
-<app-navbar class="hidden md:inline"></app-navbar>
+<div class="flex flex-col h-screen" [ngStyle]="{ overflow: overflow() }">
+    <div class="flex flex-col w-[100%]">
+        <app-navbar></app-navbar>
+        <mat-toolbar color="black">
+            <button mat-icon-button (click)="toggeNavBar()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </mat-toolbar>
+    </div>
 
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="black" class="example-toolbar">
-        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    </mat-toolbar>
-    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-            fixedTopGap="56">
-            <mat-nav-list>
-                <app-workspace-menu class="mb-12"></app-workspace-menu>
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-            <app-workspace-element-list class="pt-4 w-full"></app-workspace-element-list>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+    <div class="example-container md:h-[87%]" [class.example-is-mobile]="mobileQuery.matches">
+        <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+            <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+                fixedTopGap="245">
+                <mat-nav-list>
+                    <app-workspace-menu></app-workspace-menu>
+                </mat-nav-list>
+            </mat-sidenav>
+            <mat-sidenav-content>
+                <app-workspace-element-list class="w-full"></app-workspace-element-list>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
 </div>
