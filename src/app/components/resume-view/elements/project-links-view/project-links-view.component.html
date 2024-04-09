@@ -2,30 +2,17 @@
     <ul
     class="my-4 bg-white rounded-md shadow-lg border border-gray-200 divide-y divide-gray-200 "
   >
+  @for(item of listItems; track item){
     <li class="px-6 py-4">
       <div class="flex justify-between">
-        <span class="font-semibold text-lg">Project 1</span>
-        <mat-icon>link</mat-icon>
+        <span class="font-semibold text-lg">{{item.title}}</span>
+        <mat-icon (click) = "navigateToProject(item.url)">link</mat-icon>
       </div>
       <p class="text-gray-700">
-        The purpose of this project is to demonstrate my skill in Angular
-        framework.
+        {{item.desc}}
       </p>
     </li>
-    <li class="px-6 py-4">
-      <div class="flex justify-between">
-        <span class="font-semibold text-lg">Project 2</span>
-        <mat-icon>link</mat-icon>
-      </div>
-      <p class="text-gray-700">REST API created in C#</p>
-    </li>
-    <li class="px-6 py-4">
-      <div class="flex justify-between">
-        <span class="font-semibold text-lg">Project 3</span>
-        <mat-icon>link</mat-icon>
-      </div>
-      <p class="text-gray-700">Browser game based on websocket</p>
-    </li>
+  }
   </ul>
   
 </div>

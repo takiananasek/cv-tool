@@ -15,14 +15,9 @@
         <div
         class="w-full flex flex-col md:flex-row gap-8 mx-[20%] my-12  justify-start align-center"
       >
-        <app-profile-card-view class = "w-full md:w-[60%]" #profileCard></app-profile-card-view>
+        <app-profile-card-view [componentData] = "profileData" class = "w-full md:w-[60%]" #profileCard></app-profile-card-view>
         <div class = "w-full ">
           <div #parent class="w-full flex-shrink">
-              <app-title-view  #profileCard></app-title-view>
-              <app-textfield-view   #profileCard></app-textfield-view>
-              <app-list-view  #profileCard></app-list-view>
-              <app-project-links-view  #profileCard></app-project-links-view>
-              <app-contact-view></app-contact-view>
           </div>
         </div>
       </div>
