@@ -2,6 +2,7 @@ import {
   Component,
   ComponentRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
 import { WorkspaceContext } from '../../services/workspace-context';
@@ -20,8 +21,10 @@ import { WorkspaceProfileCardComponent } from './elements/workspace-profile-card
 export class WorkspaceElementListComponent {
   @ViewChild('parent', { read: ViewContainerRef })
   viewContainerRef!: ViewContainerRef;
+  @ViewChild('profileCard')
+  profileCardRef!: any;
+
   child_unique_key: number = 0;
-  componentsReferences = Array<ComponentRef<any>>();
   elementAddSubscription!: Subscription;
   elementDeleteSubscription!: Subscription;
 
@@ -38,6 +41,10 @@ export class WorkspaceElementListComponent {
       );
   }
 
+  ngAfterViewInit(){
+    this.workspaceContext.profileCard = this.profileCardRef;
+  }
+
   add(workspaceItemType: WorkspaceItemType) {
     if (workspaceItemType !== undefined) {
       let workspaceItem = new WorkspaceItem(workspaceItemType);
@@ -47,7 +54,7 @@ export class WorkspaceElementListComponent {
       let childComponent = childComponentRef?.instance;
       if(childComponent){
         childComponent.unique_key = ++this.child_unique_key;
-        this.componentsReferences.push(childComponentRef);
+        this.workspaceContext.componentsReferences.push(childComponentRef);
       }
     }
   }
@@ -56,7 +63,7 @@ export class WorkspaceElementListComponent {
     if (key) {
       if (this.viewContainerRef.length < 1) return;
 
-      let componentRef = this.componentsReferences.filter(
+      let componentRef = this.workspaceContext.componentsReferences.filter(
         (x) => x.instance.unique_key == key
       )[0];
 
@@ -65,7 +72,7 @@ export class WorkspaceElementListComponent {
       );
       this.viewContainerRef.remove(vcrIndex);
 
-      this.componentsReferences = this.componentsReferences.filter(
+      this.workspaceContext.componentsReferences.filter(
         (x) => x.instance.unique_key !== key
       );
     }

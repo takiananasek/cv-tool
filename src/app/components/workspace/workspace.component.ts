@@ -69,22 +69,12 @@ export class WorkspaceComponent implements AfterViewInit {
   }
 
   onSaveClick(){
-    if(this.workspaceContext.valid()){
-
-    }
-    else{
-      //display invalid popup
-      this.openDialog();
-    }
+    this.workspaceContext.onSave();
   }
 
-  openDialog(): void {
+  openFailedDialog(): void {
     const dialogRef = this.dialog.open(InvalidFormDialogComponent, {
       data: {},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
