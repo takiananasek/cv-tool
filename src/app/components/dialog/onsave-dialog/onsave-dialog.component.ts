@@ -23,7 +23,7 @@ import { InvalidFormDialogComponent } from '../invalid-form-dialog/invalid-form-
 export class OnsaveDialogComponent {
   
   constructor(
-    public dialogRef: MatDialogRef<InvalidFormDialogComponent>,
+    public dialogRef: MatDialogRef<OnsaveDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 

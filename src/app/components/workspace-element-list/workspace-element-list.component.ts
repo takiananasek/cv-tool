@@ -55,6 +55,8 @@ export class WorkspaceElementListComponent {
       if(childComponent){
         childComponent.unique_key = ++this.child_unique_key;
         this.workspaceContext.componentsReferences.push(childComponentRef);
+        console.log("Added");
+        console.log(this.workspaceContext.componentsReferences);
       }
     }
   }
@@ -72,9 +74,11 @@ export class WorkspaceElementListComponent {
       );
       this.viewContainerRef.remove(vcrIndex);
 
-      this.workspaceContext.componentsReferences.filter(
+      this.workspaceContext.componentsReferences = this.workspaceContext.componentsReferences.filter(
         (x) => x.instance.unique_key !== key
       );
+      console.log("Deleted");
+        console.log(this.workspaceContext.componentsReferences);
     }
   }
 }

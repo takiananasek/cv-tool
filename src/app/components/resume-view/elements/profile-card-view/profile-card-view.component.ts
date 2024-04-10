@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { ResumeComponentModel } from '../../../../models/resume.model';
 
 @Component({
@@ -10,14 +10,20 @@ import { ResumeComponentModel } from '../../../../models/resume.model';
 })
 export class ProfileCardViewComponent implements OnInit{
   @Input({required: true})
-  componentData!: ResumeComponentModel;
-  name!: string | number| null | undefined;
-  job!: string | number | null | undefined;
-  description!: string | number | null | undefined;
+  componentDataInput!:ResumeComponentModel;
+
+  get name(){
+    return this.componentDataInput?.componentEntries.find(c => c.label === "name")?.value
+  }
+
+  get description(){
+    return this.componentDataInput?.componentEntries.find(c => c.label === "description")?.value
+  }
+
+  get job(){
+    return this.componentDataInput?.componentEntries.find(c => c.label === "jobTitle")?.value
+  }
 
   ngOnInit(): void {
-   this.name = this.componentData.componentEntries.find(c => c.label === "name")?.value;
-   this.job = this.componentData.componentEntries.find(c => c.label === "jobTitle")?.value;
-    this.description = this.componentData.componentEntries.find(c => c.label === "description")?.value;
   }
 }

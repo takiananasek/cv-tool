@@ -10,6 +10,8 @@ import { ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave-dialog.component';
 import { InvalidFormDialogComponent } from '../components/dialog/invalid-form-dialog/invalid-form-dialog.component';
+import { ResumeService } from './resume.service';
+import { AftersaveDialogComponent } from '../components/dialog/aftersave-dialog/aftersave-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,7 @@ export class WorkspaceContext {
   elementsUpdated$: BehaviorSubject<any> = new BehaviorSubject(null);
   elementDeleted$: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private resumeService: ResumeService) {}
 
   addElement(itemType: WorkspaceItemType) {
     this.elementsUpdated$.next(itemType);
@@ -45,7 +47,11 @@ export class WorkspaceContext {
     if (valid) {
       let dialogRef = this.dialog.open(OnsaveDialogComponent);
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Ok') console.log(this.resume());
+        if (result === 'Ok'){
+          this.resumeService.addResume(this.resume()).subscribe(data =>{
+            this.dialog.open(AftersaveDialogComponent, {data:{id: data.resumeId}});
+          });
+        } 
       });
     } else {
       let dialogRef = this.dialog.open(InvalidFormDialogComponent);
