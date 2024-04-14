@@ -1,0 +1,10 @@
+<input type="file" class="hidden"
+       [accept]="requiredFileType"
+       (change)="onFileSelected($event)" #fileUpload>
+<div class="flex justify-center items-center text-uppercase p-1">
+   {{fileName || "No file uploaded yet."}}
+    <button mat-mini-fab color="primary" class="upload-btn"
+      (click)="fileUpload.click()">
+        <mat-icon>attach_file</mat-icon>
+    </button>
+</div>

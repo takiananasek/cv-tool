@@ -15,6 +15,7 @@ import { WorkspaceContext } from '../../../../services/workspace-context';
 import { MatIconModule } from '@angular/material/icon';
 import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
 
 @Component({
   selector: 'app-workspace-profile-card',
@@ -26,6 +27,7 @@ import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
     TextFieldModule,
     MatIconModule,
     ReactiveFormsModule,
+    FileUploadComponent
   ],
   templateUrl: './workspace-profile-card.component.html',
   styleUrl: './workspace-profile-card.component.scss',
@@ -34,6 +36,7 @@ export class WorkspaceProfileCardComponent
   extends WorkspaceBaseElementComponent
   implements OnInit
 {
+  fileName = '';
   profileForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
 
@@ -120,4 +123,22 @@ export class WorkspaceProfileCardComponent
     );
     this.workspaceContext.deleteElement(this.unique_key);
   }
+
+  onFileSelected(event: any) {
+
+    const file:File = event.target.files[0];
+
+    if (file) {
+
+        this.fileName = file.name;
+
+        const formData = new FormData();
+
+        formData.append("thumbnail", file);
+
+        //const upload$ = this.http.post("/api/thumbnail-upload", formData);
+
+        //upload$.subscribe();
+    }
+}
 }
