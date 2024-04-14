@@ -3,6 +3,7 @@ import { WorkspaceItemType } from "./workspaceItemType.model";
 export interface ResumeModel{
    // resumeId: number | null;
     ownerId: number | null;
+    title: string | null;
     components: ResumeComponentModel[];
 }
 

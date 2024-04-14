@@ -23,6 +23,18 @@ export class ResumeService {
       );
   }
 
+  getUserResumes(userId: number): Observable<{ids: number[]}> {
+    return this.http
+      .post<{ids: number[]}>(`${environment.baseUrl}${this.serviceName}/getByUser/`, {
+        userId: userId,
+      })
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
+
   addResume(resume: ResumeModel): Observable<{resumeId: number}> {
     return this.http
       .post<{resumeId: number}>(`${environment.baseUrl}${this.serviceName}/add/`, resume)

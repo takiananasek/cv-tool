@@ -20,7 +20,7 @@ export class WorkspaceContext {
   profileCard!: any;
   componentsReferences = Array<ComponentRef<any>>();
   resume: WritableSignal<ResumeModel> = signal({
-    resumeId: null,
+    title: null,
     ownerId: null,
     components: [],
   });
@@ -39,6 +39,7 @@ export class WorkspaceContext {
   }
 
   onSave() {
+    console.log(this.resume());
     let valid = true;
     this.componentsReferences.forEach((c) => {
       valid = c.instance.valid && valid;
