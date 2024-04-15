@@ -1,75 +1,115 @@
 <section class="flex">
   <div class="flex flex-col p-8 gap-4">
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       Profile Component
       <div
-        class="my-4 border border-gray-200 max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-4 bg-white rounded-md text-gray-900">
+        class="my-4 border border-gray-200 max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-4 bg-white rounded-md text-gray-900"
+      >
         <div class="rounded-t-lg h-32 overflow-hidden">
-          <img class="object-cover object-top w-full"
-            src='https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ'
-            alt='Mountain'>
+          <img
+            class="object-cover object-top w-full"
+            src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
+            alt="Mountain"
+          />
         </div>
-        <div class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-          <img class="object-cover object-center h-32"
-            src='https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ'
-            alt='Woman looking front'>
+        <div
+          class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden"
+        >
+          <img
+            class="object-cover object-center h-32"
+            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
+            alt="Woman looking front"
+          />
         </div>
         <div class="text-center">
           <h2 class="font-semibold">Sarah Smith</h2>
           <p class="text-gray-500">Freelance Web Designer</p>
         </div>
         <ul class="p-4 text-gray-700 flex items-center justify-around">
-          <div class="m-4">I'm an experienced frontend developer looking for a new role in Angular development field
+          <div class="m-4">
+            I'm an experienced frontend developer looking for a new role in
+            Angular development field
           </div>
         </ul>
       </div>
-      <button matTooltip="The profile component has already been added by default"
-        mat-icon-button><mat-icon>info</mat-icon></button>
+      <button
+        matTooltip="The profile component has already been added by default"
+        mat-icon-button
+      >
+        <mat-icon>info</mat-icon>
+      </button>
     </div>
-
 
     <!-- TITLE -->
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       Title Component
-      <div class="text-2xl text-bold  w-full py-4">
-        This is a sample title
-      </div>
-      <button matTooltip="Use title component to name a section in your resumee"
-        (click)=addElement(itemTypes.TitleElement) mat-icon-button><mat-icon>add_circle</mat-icon></button>
+      <div class="text-2xl text-bold w-full py-4">This is a sample title</div>
+      <button
+        matTooltip="Use title component to name a section in your resumee"
+        (click)="addElement(itemTypes.TitleElement)"
+        mat-icon-button
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
     </div>
     <!-- LIST -->
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       List Component
-      <div class=" my-4 text-base w-full py-4 border border-gray-200 p-6 bg-white rounded-lg shadow">
+      <div
+        class="my-4 text-base w-full py-4 border border-gray-200 p-6 bg-white rounded-lg shadow"
+      >
         <div class="text-xl font-semibold">Resumeey</div>
         <div class="text-sm">2023-2024</div>
         <div class="py-1">
-          <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+          <ul
+            class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400"
+          >
             <li class="flex items-center">
-              <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+                />
               </svg>
               Implementation of an amazing user interface
             </li>
             <li class="flex items-center">
-              <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+                />
               </svg>
-              Excellent collaboration with international teams in a collaborative effort to deliver high quality
-              software
+              Excellent collaboration with international teams in a
+              collaborative effort to deliver high quality software
             </li>
             <li class="flex items-center">
-              <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
-                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+                />
               </svg>
               Development of a fine microservices architecture
             </li>
@@ -78,33 +118,53 @@
       </div>
       <button
         matTooltip="Use the list component to describe a position or a chapter in your career and list your responsibilities"
-        (click)=addElement(itemTypes.ListElement) mat-icon-button><mat-icon>add_circle</mat-icon></button>
+        (click)="addElement(itemTypes.ListElement)"
+        mat-icon-button
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
     </div>
     <!-- TEXT FIELD -->
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       Text Field Component
-      <div class="block max-w-sm p-6 my-4 bg-white border border-gray-200 rounded-lg shadow">
-
-        <div class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Noteworthy technology
-          acquisitions 2021</div>
-        <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions
-          of 2021 so far, in reverse chronological order.</p>
+      <div
+        class="block max-w-sm p-6 my-4 bg-white border border-gray-200 rounded-lg shadow"
+      >
+        <div class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+          Noteworthy technology acquisitions 2021
+        </div>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          Here are the biggest enterprise technology acquisitions of 2021 so
+          far, in reverse chronological order.
+        </p>
       </div>
-      <button matTooltip="Use text area to describe an important project or particular"
-        (click)="addElement(itemTypes.TextFieldElement)" mat-icon-button><mat-icon>add_circle</mat-icon></button>
+      <button
+        matTooltip="Use text area to describe an important project or particular"
+        (click)="addElement(itemTypes.TextFieldElement)"
+        mat-icon-button
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
     </div>
     <!-- Project Links -->
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       Project Links/Certifications Component
-      <ul class="my-4 bg-white rounded-lg shadow divide-y divide-gray-200 max-w-sm">
+      <ul
+        class="my-4 bg-white rounded-lg shadow divide-y divide-gray-200 max-w-sm"
+      >
         <li class="px-6 py-4">
           <div class="flex justify-between">
             <span class="font-semibold text-lg">Project 1</span>
             <mat-icon>link</mat-icon>
           </div>
-          <p class="text-gray-700">The purpose of this project is to demonstrate my skill in Angular framework.</p>
+          <p class="text-gray-700">
+            The purpose of this project is to demonstrate my skill in Angular
+            framework.
+          </p>
         </li>
         <li class="px-6 py-4">
           <div class="flex justify-between">
@@ -121,18 +181,28 @@
           <p class="text-gray-700">Browser game based on websocket</p>
         </li>
       </ul>
-      <button matTooltip="Add links to your personal projects and portfolio"
-        (click)="addElement(itemTypes.ProjectLinksElement)" mat-icon-button><mat-icon>add_circle</mat-icon></button>
+      <button
+        matTooltip="Add links to your personal projects and portfolio"
+        (click)="addElement(itemTypes.ProjectLinksElement)"
+        mat-icon-button
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
     </div>
 
     <!-- Contact Info -->
     <div
-      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100">
+      class="transition-all flex flex-col justify-center items-center p-4 shadow-md shadow-gray-400 hover:bg-gray-100"
+    >
       Contact Component
-      <div class="my-4 text-base w-full py-4 border border-gray-200 p-6 bg-white rounded-lg shadow">
+      <div
+        class="my-4 text-base w-full py-4 border border-gray-200 p-6 bg-white rounded-lg shadow"
+      >
         <div class="text-xl font-semibold">Contact</div>
         <div class="py-1">
-          <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+          <ul
+            class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400"
+          >
             <li class="flex items-center">
               <mat-icon class="mx-2">phone</mat-icon>+48 222 222 222
             </li>
@@ -140,13 +210,19 @@
               <mat-icon class="mx-2">mail</mat-icon> mail(at)gmail.com
             </li>
             <li class="flex items-center">
-              <mat-icon class="mx-2">home</mat-icon> Berliner St. 14 22-222 New York
+              <mat-icon class="mx-2">home</mat-icon> Berliner St. 14 22-222 New
+              York
             </li>
           </ul>
         </div>
       </div>
-      <button matTooltip="Use the contact info componet to add information about your email, phone number and address."
-        (click)=addElement(itemTypes.ContactElement) mat-icon-button><mat-icon>add_circle</mat-icon></button>
+      <button
+        matTooltip="Use the contact info componet to add information about your email, phone number and address."
+        (click)="addElement(itemTypes.ContactElement)"
+        mat-icon-button
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
     </div>
   </div>
 </section>

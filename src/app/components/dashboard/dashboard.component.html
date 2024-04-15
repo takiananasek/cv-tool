@@ -1,0 +1,40 @@
+<div class="flex flex-col h-screen items-center">
+    <div class="flex flex-col w-full flex-wrap">
+        <app-navbar></app-navbar>
+    </div>
+    <div class="w-full p-4 md:p-0 md:w-[50%] mt-5 flex flex-col  align-top">
+        <h1>Hello User!</h1>
+        <h3>Manage your saved resumes:</h3>
+        @for(resume of resumes(); track resume){
+            <div class="bg-white shadow-lg border flex-shrink rounded-md mt-4 border-gray-200 transform transition-all">
+                <div class="bg-white transform transition-all">
+                    <div class="flex flex-wrap flex-row justify-between">
+                        <div class="px-2 py-3 text-2xl font-bold tracking-tight text-gray-900">
+                           {{getResumeLink(resume)}}
+                        </div>
+                        <div class = "flex flex-col md:flex-row">
+                            <span class="flex p-2">
+                                <button type="button" 
+                                    class="flex p-2  rounded-md   items-center justify-center  border border-transparent bg-gray-900 text-base leading-6 font-medium text-white shadow-sm hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                    Copy link <mat-icon class = "ml-1">link</mat-icon>
+                                </button>
+                            </span>
+                            <span class="flex p-2 ">
+                                <button type="button" 
+                                    class="flex p-2 items-center justify-center  rounded-md border  bg-gray-900 text-base leading-6 font-medium text-white shadow-sm hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                    Open <mat-icon class = "ml-1">open_in_new</mat-icon>
+                                </button>
+                            </span>
+                            <span class="flex p-2">
+                                <button type="button" 
+                                class="flex p-2 items-center justify-center  rounded-md border border-transparent  bg-gray-100 text-base leading-6 font-medium text-gray-900 shadow-sm hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                    Delete <mat-icon class = "ml-1">delete_outline</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+      </div>
+</div>

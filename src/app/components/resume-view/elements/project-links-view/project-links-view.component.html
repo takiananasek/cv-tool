@@ -1,0 +1,18 @@
+<div class = "w-full">
+    <ul
+    class="my-4 bg-white rounded-md shadow-lg border border-gray-200 divide-y divide-gray-200 "
+  >
+  @for(item of listItems; track item){
+    <li class="px-6 py-4">
+      <div class="flex justify-between">
+        <span class="font-semibold text-lg">{{item.title}}</span>
+        <mat-icon (click) = "navigateToProject(item.url)">link</mat-icon>
+      </div>
+      <p class="text-gray-700">
+        {{item.desc}}
+      </p>
+    </li>
+  }
+  </ul>
+  
+</div>

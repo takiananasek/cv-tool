@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkspaceContactElementComponent } from './workspace-contact-element.component';
+import { WorkspaceEmptyElementComponent } from './workspace-empty-element.component';
 
 describe('WorkspaceContactElementComponent', () => {
-  let component: WorkspaceContactElementComponent;
-  let fixture: ComponentFixture<WorkspaceContactElementComponent>;
+  let component: WorkspaceEmptyElementComponent;
+  let fixture: ComponentFixture<WorkspaceEmptyElementComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WorkspaceContactElementComponent]
+      imports: [WorkspaceEmptyElementComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(WorkspaceContactElementComponent);
+    fixture = TestBed.createComponent(WorkspaceEmptyElementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

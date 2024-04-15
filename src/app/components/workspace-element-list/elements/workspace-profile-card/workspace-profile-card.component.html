@@ -1,28 +1,31 @@
-<div class=" border border-gray-200 mx-4 bg-white rounded-md text-gray-900">
+<div class=" min-w-96 border border-gray-200 mx-4 bg-white rounded-md text-gray-900">
     <div class="rounded-t-lg overflow-hidden">
-        <img class="object-cover object-top w-full"
-            src='https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ'
+        <app-file-upload class = "my-1"></app-file-upload>
+        <img class="object-fill object-top w-full"
+            src='../../../../../assets/img/placeholder.jpeg'
             alt='Mountain'>
     </div>
     <div class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
         <img class="object-cover object-center h-32"
-            src='https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ'
+            src='../../../../../assets/img/img-placeh.png'
             alt='Profile picture'>
     </div>
-    <form class="text-center pt-2 flex flex-col p-4">
+    <input type="file" class="hidden" (change)="onFileSelected($event)" #fileUpload>
+    <app-file-upload></app-file-upload>
+    <!-- Form -->
+    <form [formGroup]="profileForm" class="text-center pt-2 flex flex-col p-4">
         <mat-form-field>
             <mat-label>Full Name</mat-label>
-            <input matInput placeholder="Sarah Smith">
+            <input formControlName="name" matInput placeholder="Sarah Smith">
         </mat-form-field>
         <mat-form-field>
             <mat-label>Job Title</mat-label>
-            <input matInput placeholder="Angular Developer">
+            <input matInput formControlName="jobTitle" placeholder="Angular Developer">
         </mat-form-field>
         <mat-form-field class="">
             <mat-label>Profile description</mat-label>
             <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
+                cdkAutosizeMaxRows="5" formControlName="description"></textarea>
         </mat-form-field>
-
     </form>
 </div>
