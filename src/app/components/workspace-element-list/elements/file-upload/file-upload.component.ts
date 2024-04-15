@@ -1,50 +1,33 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Subscription, finalize } from 'rxjs';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { FileUploadService } from '../../../../services/file-upload.service';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
   imports: [MatProgressBarModule, MatIconModule],
   templateUrl: './file-upload.component.html',
-  styleUrl: './file-upload.component.scss'
+  styleUrl: './file-upload.component.scss',
 })
 export class FileUploadComponent {
-
   @Input()
-    requiredFileType!:string;
-    fileName = '';
-    uploadSub!: Subscription | null;
+  requiredFileType!: string;
+  fileName = '';
 
-    constructor(private http: HttpClient) {}
+  @ViewChild('input') input!: any;
 
-    onFileSelected(event:any) {
-        const file:File = event.target.files[0];
-      
-        if (file) {
-            this.fileName = file.name;
-            const formData = new FormData();
-            formData.append("thumbnail", file);
+  constructor(private fileService: FileUploadService) {}
 
-            const upload$ = this.http.post("/api/thumbnail-upload", formData, {
-                reportProgress: true,
-                observe: 'events'
-            })
-            .pipe(
-                finalize(() => this.reset())
-            );
-          
-            this.uploadSub = upload$.subscribe(event => {
-              if (event.type == HttpEventType.UploadProgress) {
-                //this.uploadProgress = Math.round(100 * (event.loaded / event.total));
-              }
-            })
-        }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileName = file.name;
+      const formData = new FormData();
+      formData.append('file', file);
+      this.fileService.uploadFile(file);
     }
-
-  reset() {
-    this.uploadSub = null;
   }
 }
