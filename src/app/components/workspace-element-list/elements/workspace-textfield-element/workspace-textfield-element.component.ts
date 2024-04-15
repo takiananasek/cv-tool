@@ -75,6 +75,9 @@ export class WorkspaceTextfieldElementComponent
           (r) =>
             <ResumeModel>{
               ownerId: r.ownerId,
+              title: r.title,
+              backgroundImageMetadataId: r.backgroundImageMetadataId,
+              profileImageMetadataId: r.profileImageMetadataId,
               components: [
                 ...r.components.filter(
                   (c) => c.componentDocumentId !== this.unique_key

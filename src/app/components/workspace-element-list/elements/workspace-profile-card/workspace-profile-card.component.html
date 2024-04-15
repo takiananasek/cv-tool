@@ -1,6 +1,6 @@
 <div class=" min-w-96 border border-gray-200 mx-4 bg-white rounded-md text-gray-900">
     <div class="rounded-t-lg overflow-hidden">
-        <app-file-upload class = "my-1"></app-file-upload>
+        <app-file-upload [fileInputType] = "FileInputType.Background" class = "my-1"></app-file-upload>
         <img class="object-fill object-top w-full"
             src='../../../../../assets/img/placeholder.jpeg'
             alt='Mountain'>
@@ -11,7 +11,7 @@
             alt='Profile picture'>
     </div>
     <input type="file" class="hidden" (change)="onFileSelected($event)" #fileUpload>
-    <app-file-upload></app-file-upload>
+    <app-file-upload [fileInputType] = "FileInputType.Profile"></app-file-upload>
     <!-- Form -->
     <form [formGroup]="profileForm" class="text-center pt-2 flex flex-col p-4">
         <mat-form-field>

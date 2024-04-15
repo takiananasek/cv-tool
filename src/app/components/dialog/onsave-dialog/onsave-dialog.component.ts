@@ -55,15 +55,15 @@ export class OnsaveDialogComponent implements OnInit {
   }
 
   onOkClick(): void {
-    if(this.titleForm.valid){
+    if (this.titleForm.valid) {
       this.workspaceContext.resume.update(
         (r) =>
           <ResumeModel>{
-            title: this.titleForm.value.title,
             ownerId: r.ownerId,
-            components: [
-              ...r.components
-            ],
+            backgroundImageMetadataId: r.backgroundImageMetadataId,
+            title: this.titleForm.value.title,
+            profileImageMetadataId: r.profileImageMetadataId,
+            components: [...r.components],
           }
       );
       this.dialogRef.close('Ok');
