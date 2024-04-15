@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
+import { FileInputType } from '../../../../models/fileInputType';
 
 @Component({
   selector: 'app-workspace-profile-card',
@@ -39,6 +40,7 @@ export class WorkspaceProfileCardComponent
   fileName = '';
   profileForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
+  FileInputType = FileInputType;
 
   get valid() {
     if (this.profileForm) {
@@ -63,6 +65,9 @@ export class WorkspaceProfileCardComponent
       (r) =>
         <ResumeModel>{
           ownerId: r.ownerId,
+              title: r.title,
+              backgroundImageMetadataId: r.backgroundImageMetadataId,
+              profileImageMetadataId: r.profileImageMetadataId,
           components: [
             ...r.components.filter(
               (c) => c.componentDocumentId !== this.unique_key

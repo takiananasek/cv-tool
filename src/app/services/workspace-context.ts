@@ -20,10 +20,14 @@ export class WorkspaceContext {
   profileCard!: any;
   componentsReferences = Array<ComponentRef<any>>();
   resume: WritableSignal<ResumeModel> = signal({
+    profileImageMetadataId: null,
+    backgroundImageMetadataId: null,
     title: null,
     ownerId: null,
     components: [],
   });
+  // resumeProfileFile: WritableSignal<FormData | null> = signal(null);
+  // backgroundProfileFile: WritableSignal<string | null> = signal(null);
 
   elementsUpdated$: BehaviorSubject<any> = new BehaviorSubject(null);
   elementDeleted$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -39,8 +43,6 @@ export class WorkspaceContext {
   }
 
   onSave() {
-    //TODO: Save file, then save resume
-    
     console.log(this.resume());
     let valid = true;
     this.componentsReferences.forEach((c) => {
@@ -50,7 +52,7 @@ export class WorkspaceContext {
     if (valid) {
       let dialogRef = this.dialog.open(OnsaveDialogComponent);
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Ok'){
+        if (result === 'Ok'){  
           this.resumeService.addResume(this.resume()).subscribe(data =>{
             this.dialog.open(AftersaveDialogComponent, {data:{id: data.resumeId}});
           });
