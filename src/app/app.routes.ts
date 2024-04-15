@@ -4,9 +4,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { ResumeViewComponent } from './components/resume-view/resume-view.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ToastrModule } from 'ngx-toastr';
-
 //TODO: Auth guard based on user context, session management 
-
 export const routes: Routes = [
     {path: 'workspace', component: WorkspaceComponent, providers: [ToastrModule]},
     {path: 'home', component: MainPageComponent},
