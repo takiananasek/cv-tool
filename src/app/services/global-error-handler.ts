@@ -1,6 +1,3 @@
-
-// demo.interceptor.ts
-
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -18,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {      
-           this.toastService.error('Unauthorized', "You are not authorized to perform this action or session has expired.");
+           this.toastService.error('Unauthorized', "You are not authorized to perform this action or your session has expired.");
             console.error('Unauthorized request:', err);
           } else {
           this.toastService.error('Something went wrong:', err.error.message);

@@ -39,6 +39,8 @@ export class WorkspaceContext {
   }
 
   onSave() {
+    //TODO: Save file, then save resume
+    
     console.log(this.resume());
     let valid = true;
     this.componentsReferences.forEach((c) => {

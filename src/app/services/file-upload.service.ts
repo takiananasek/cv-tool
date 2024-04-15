@@ -7,4 +7,6 @@ import { Injectable } from '@angular/core';
 export class FileUploadService {
   constructor(private http: HttpClient) {}
   serviceName = 'File';
+
+  //TODO: Implement API call
 }
