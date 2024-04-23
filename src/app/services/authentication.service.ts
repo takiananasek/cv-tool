@@ -1,32 +1,85 @@
-import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { ExternalAuth } from '../models/externalAuth';
+import { environment } from '../../environments/environment';
+import { User } from '../models/user';
+import { Router } from '@angular/router';
+declare var google: any;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private authChangeSub = new Subject<boolean>();
-  private extAuthChangeSub = new Subject<SocialUser>();
-  public authChanged = this.authChangeSub.asObservable();
-  public extAuthChanged = this.extAuthChangeSub.asObservable();
+  serviceName = 'ExternalAuth';
+  private user: WritableSignal<User | null> = signal(null);
 
-  constructor(
-    private http: HttpClient,
-    private externalAuthService: SocialAuthService
-  ) {
-    this.externalAuthService.authState.subscribe((user) => {
-      console.log(user);
-      this.extAuthChangeSub.next(user);
-    });
+  constructor(private http: HttpClient, private router: Router) {}
+
+  public get userValue() {
+    return this.user();
   }
 
-  public signInWithGoogle = () => {
-    this.externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  };
+  externalLogin(route: string, body: ExternalAuth) :Observable<any> {
+    return this.http.post(
+      `${environment.baseUrl}${this.serviceName}/externalLogin/`,
+      body
+    ).pipe(
+      map((user: User) => {
+        this.user.set(user);
+        this.startRefreshTokenTimer();
+        return user;
+      })
+    );;
+  }
+
   public signOutExternal = () => {
-    this.externalAuthService.signOut();
+    google.accounts.id.disableAutoSelect();
+    this.router.navigate(['/']);
   };
+
+  logout() {
+    this.http
+      .post<any>(
+        `${environment.baseUrl}${this.serviceName}/revokeToken`,
+        {},
+        { withCredentials: true }
+      )
+      .subscribe();
+    this.stopRefreshTokenTimer();
+    this.user.set(null);
+    this.router.navigate(['/login']);
+  }
+
+  refreshToken() {
+    return this.http
+      .post(
+        `${environment.baseUrl}${this.serviceName}/refreshToken`,
+        {}
+      )
+      .pipe(
+        map((user: User) => {
+          this.user.set(user);
+          this.startRefreshTokenTimer();
+          return user;
+        })
+      );
+  }
+
+  private refreshTokenTimeout?: any;
+
+  private startRefreshTokenTimer() {
+    const jwtBase64 = this.userValue!.jwtToken!.split('.')[1];
+    const jwtToken = JSON.parse(atob(jwtBase64));
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - 60 * 1000;
+    this.refreshTokenTimeout = setTimeout(
+      () => this.refreshToken().subscribe(),
+      timeout
+    );
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
+  }
 }
