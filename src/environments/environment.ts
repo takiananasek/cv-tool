@@ -4,4 +4,6 @@ export const environment = {
     baseUrl: 'https://localhost:7294/',
     redirectUri: 'http://localhost:4200/',
     postLogoutRedirectUri: 'http://localhost:4200/',
+    docsLink: 'https://nina.gitbook.io/resumeey-docs',
+    baseFilePath: ''
   };

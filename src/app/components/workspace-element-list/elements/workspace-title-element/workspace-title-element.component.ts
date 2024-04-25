@@ -13,7 +13,7 @@ import {
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
-import { ResumeModel } from '../../../../models/resume.model';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-title-element',
@@ -34,6 +34,7 @@ export class WorkspaceTitleElementComponent
 {
   titleForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
+  readonly store = inject(ResumeStore);
 
   get valid() {
     if (this.titleForm) {
@@ -50,7 +51,7 @@ export class WorkspaceTitleElementComponent
     this.titleForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
     });
-    this.workspaceContext.resume().components.push({
+    this.store.addComponent({
       componentDocumentId: this.unique_key,
       componentType: WorkspaceItemType.TitleElement,
       componentEntries: [],
@@ -61,41 +62,20 @@ export class WorkspaceTitleElementComponent
   onChanges(): void {
     this.titleForm.valueChanges.subscribe((val) => {
       if (this.titleForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.TitleElement,
-                  componentEntries: [
-                    { label: 'title', value: val.title, children: [] },
-                  ],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.TitleElement,
+          componentEntries: [
+            { label: 'title', value: val.title, children: [] },
+          ],
+        });
       }
     });
   }
 
   deleteElement(event: any) {
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-          components: r.components.filter(
-            (x) => x.componentDocumentId !== this.unique_key
-          ),
-        }
-    );
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 }

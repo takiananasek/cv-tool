@@ -2,8 +2,6 @@ import {
   Component,
   ViewChild,
   ViewContainerRef,
-  WritableSignal,
-  signal,
 } from '@angular/core';
 import { ContactViewComponent } from './elements/contact-view/contact-view.component';
 import { TitleViewComponent } from './elements/title-view/title-view.component';
@@ -51,8 +49,11 @@ export class ResumeViewComponent {
   ngOnInit() {
     if (!this.route.snapshot.paramMap.get('id'))
       this.router.navigate(['/home']);
+
     this.resumeId = Number(this.route.snapshot.paramMap.get('id'));
-    this.resumeService.getResume(this.resumeId).subscribe((data) => {
+
+    this.resumeService.getResume(this.resumeId)
+    .subscribe((data) => {
       this.resumeData = data;
       this.profileData=
         this.resumeData.components.find(
@@ -66,7 +67,6 @@ export class ResumeViewComponent {
       this.resumeData.components.map((c) => {
         if (c.componentType !== WorkspaceItemType.ProfileCardElement) {
           let workspaceItem = new ResumeViewItem(c.componentType);
-          let componentType = typeof workspaceItem.component;
           const componentRef = this.viewContainerRef?.createComponent(
             workspaceItem.component
           );

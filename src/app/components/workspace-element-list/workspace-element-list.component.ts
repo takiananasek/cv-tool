@@ -4,12 +4,14 @@ import {
   ViewChild,
   ViewChildren,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { Subscription } from 'rxjs';
 import { WorkspaceItem } from './elements/workspaceItem';
 import { WorkspaceItemType } from '../../models/workspaceItemType.model';
 import { WorkspaceProfileCardComponent } from './elements/workspace-profile-card/workspace-profile-card.component';
+import { ResumeStore } from '../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-element-list',
@@ -28,7 +30,8 @@ export class WorkspaceElementListComponent {
   elementAddSubscription!: Subscription;
   elementDeleteSubscription!: Subscription;
 
-  constructor(private workspaceContext: WorkspaceContext) {}
+  constructor(private workspaceContext: WorkspaceContext) {
+  }
 
   ngOnInit() {
     this.elementAddSubscription =
@@ -55,8 +58,6 @@ export class WorkspaceElementListComponent {
       if(childComponent){
         childComponent.unique_key = ++this.child_unique_key;
         this.workspaceContext.componentsReferences.push(childComponentRef);
-        console.log("Added");
-        console.log(this.workspaceContext.componentsReferences);
       }
     }
   }
@@ -77,8 +78,6 @@ export class WorkspaceElementListComponent {
       this.workspaceContext.componentsReferences = this.workspaceContext.componentsReferences.filter(
         (x) => x.instance.unique_key !== key
       );
-      console.log("Deleted");
-        console.log(this.workspaceContext.componentsReferences);
     }
   }
 }

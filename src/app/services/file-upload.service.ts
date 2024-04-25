@@ -1,14 +1,13 @@
 import {
   HttpClient,
-  HttpErrorResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ToastService } from './toast.service';
-import { map } from 'rxjs';
 import { WorkspaceContext } from './workspace-context';
 import { FileInputType } from '../models/fileInputType';
-import { ResumeModel } from '../models/resume.model';
+import { ResumeStore } from './resume.store';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +16,8 @@ export class FileUploadService {
 
   constructor(private http: HttpClient, private toastService: ToastService, private workspaceContext: WorkspaceContext) {}
   serviceName = 'Files';
-
+  readonly store = inject(ResumeStore);
+  
   uploadSingleFile(file: any, fileType: FileInputType) {
     let fileToUpload = <File>file;
     const formData = new FormData();
@@ -31,28 +31,24 @@ export class FileUploadService {
         if(data.body){
           switch(fileType){
             case FileInputType.Profile:
-              this.workspaceContext.resume.update(r => <ResumeModel>{
-                ownerId: r.ownerId,
-                backgroundImageMetadataId: r.backgroundImageMetadataId,
-                title: r.title,
-                profileImageMetadataId: data.body.newId,
-                components: [...r.components]
-              })
-              console.log(this.workspaceContext.resume())
+              this.store.updateProfileIMageMetadataName(data.body.key);
               break;
             case FileInputType.Background: 
-            this.workspaceContext.resume.update(r => <ResumeModel>{
-              ownerId: r.ownerId,
-              backgroundImageMetadataId: data.body.newId,
-              title: r.title,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [...r.components]
-            })
-            console.log(this.workspaceContext.resume())
+            this.store.updateBackgroundImageMetadataName(data.body.key)
               break;
           }
           this.toastService.success('Successfully uploaded image', '')
         }
       });
+  }
+
+  getResumeFile(fileId: any): Observable<any> {
+    return this.http
+      .post<any>(`${environment.baseUrl}${this.serviceName}/getFileById/`, fileId)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
   }
 }

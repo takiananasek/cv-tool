@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { WorkspaceContext } from '../../../services/workspace-context';
 import { ResumeModel } from '../../../models/resume.model';
+import { ResumeStore } from '../../../services/resume.store';
 
 @Component({
   selector: 'app-onsave-dialog',
@@ -47,6 +48,7 @@ export class OnsaveDialogComponent implements OnInit {
 
   titleForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
+  private store = inject(ResumeStore);
 
   ngOnInit(): void {
     this.titleForm = this.formBuilder.group({
@@ -56,16 +58,17 @@ export class OnsaveDialogComponent implements OnInit {
 
   onOkClick(): void {
     if (this.titleForm.valid) {
-      this.workspaceContext.resume.update(
-        (r) =>
-          <ResumeModel>{
-            ownerId: r.ownerId,
-            backgroundImageMetadataId: r.backgroundImageMetadataId,
-            title: this.titleForm.value.title,
-            profileImageMetadataId: r.profileImageMetadataId,
-            components: [...r.components],
-          }
-      );
+      this.store.updateTitle(this.titleForm.value.title);
+      // this.workspaceContext.resume.update(
+      //   (r) =>
+      //     <ResumeModel>{
+      //       ownerId: r.ownerId,
+      //       backgroundImageMetadataId: r.backgroundImageMetadataId,
+      //       title: this.titleForm.value.title,
+      //       profileImageMetadataId: r.profileImageMetadataId,
+      //       components: [...r.components],
+      //     }
+      // );
       this.dialogRef.close('Ok');
     }
   }

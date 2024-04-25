@@ -60,6 +60,8 @@ export class AuthenticationService {
       .pipe(
         map((user: User) => {
           this.user.set(user);
+          localStorage.setItem('token', user.jwtToken ?? "");
+          localStorage.setItem('refreshToken', user.refreshToken ?? "");
           this.startRefreshTokenTimer();
           return user;
         })

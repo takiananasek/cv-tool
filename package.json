@@ -22,6 +22,8 @@
     "@angular/router": "^17.3.0",
     "@ngrx/signals": "^17.2.0",
     "ngx-clipboard": "^16.0.0",
+    "ngx-cookie-service": "^17.1.0",
+    "ngx-spinner": "^16.0.2",
     "ngx-toastr": "^18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

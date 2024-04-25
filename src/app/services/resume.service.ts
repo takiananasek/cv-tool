@@ -23,9 +23,21 @@ export class ResumeService {
       );
   }
 
-  getUserResumes(userId: number): Observable<{ids: number[]}> {
+  deleteResume(id: number) {
     return this.http
-      .post<{ids: number[]}>(`${environment.baseUrl}${this.serviceName}/getByUser/`, {
+      .post<{}>(`${environment.baseUrl}${this.serviceName}/delete/`, {
+        id: id,
+      })
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
+
+  getUserResumes(userId: number): Observable<{resumes: [{ id: number, title: string }]}> {
+    return this.http
+      .post<{resumes: [{id: number, title: string}]}>(`${environment.baseUrl}${this.serviceName}/getByUser/`, {
         userId: userId,
       })
       .pipe(

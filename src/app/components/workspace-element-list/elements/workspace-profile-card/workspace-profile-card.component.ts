@@ -17,6 +17,7 @@ import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
 import { FileInputType } from '../../../../models/fileInputType';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-profile-card',
@@ -41,6 +42,7 @@ export class WorkspaceProfileCardComponent
   profileForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
   FileInputType = FileInputType;
+  readonly store = inject(ResumeStore);
 
   get valid() {
     if (this.profileForm) {
@@ -61,76 +63,41 @@ export class WorkspaceProfileCardComponent
       description: new FormControl('', Validators.required),
     });
 
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-          components: [
-            ...r.components.filter(
-              (c) => c.componentDocumentId !== this.unique_key
-            ),
-            {
-              componentDocumentId: 0,
-              componentType: WorkspaceItemType.ProfileCardElement,
-              componentEntries: [],
-              children: [],
-            },
-          ],
-        }
-    );
-
+    this.store.addComponent({
+      componentDocumentId: 0,
+      componentType: WorkspaceItemType.ProfileCardElement,
+      componentEntries: []
+    })
     this.onChanges();
   }
 
   onChanges(): void {
     this.profileForm.valueChanges.subscribe((val) => {
       if (this.profileForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.ProfileCardElement,
-                  componentEntries: [
-                    { label: 'name', value: val.name, children: [] },
-                    { label: 'jobTitle', value: val.jobTitle, children: [] },
-                    {
-                      label: 'description',
-                      value: val.description,
-                      children: [],
-                    },
-                  ],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ProfileCardElement,
+          componentEntries: [
+            { label: 'name', value: val.name, children: [] },
+            { label: 'jobTitle', value: val.jobTitle, children: [] },
+            {
+              label: 'description',
+              value: val.description,
+              children: [],
+            },
+          ],
+        },);
       }
     });
   }
 
   deleteElement(event: any) {
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-          components: r.components.filter(
-            (x) => x.componentDocumentId !== this.unique_key
-          ),
-        }
-    );
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 
   onFileSelected(event: any) {
-
     const file:File = event.target.files[0];
 
     if (file) {
@@ -140,10 +107,6 @@ export class WorkspaceProfileCardComponent
         const formData = new FormData();
 
         formData.append("thumbnail", file);
-
-        //const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
-        //upload$.subscribe();
     }
 }
 }

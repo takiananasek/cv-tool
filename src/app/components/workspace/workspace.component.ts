@@ -52,8 +52,12 @@ export class WorkspaceComponent implements AfterViewInit {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public workspaceContext: WorkspaceContext,
-    public dialog: MatDialog) {
+  constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    public workspaceContext: WorkspaceContext,
+    public dialog: MatDialog
+  ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -68,7 +72,7 @@ export class WorkspaceComponent implements AfterViewInit {
     this.opened.update((c) => !c);
   }
 
-  onSaveClick(){
+  onSaveClick() {
     this.workspaceContext.onSave();
   }
 
@@ -81,5 +85,4 @@ export class WorkspaceComponent implements AfterViewInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-  
 }

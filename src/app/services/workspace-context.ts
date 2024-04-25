@@ -2,6 +2,7 @@ import {
   ComponentRef,
   Injectable,
   WritableSignal,
+  inject,
   signal,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -12,6 +13,8 @@ import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave
 import { InvalidFormDialogComponent } from '../components/dialog/invalid-form-dialog/invalid-form-dialog.component';
 import { ResumeService } from './resume.service';
 import { AftersaveDialogComponent } from '../components/dialog/aftersave-dialog/aftersave-dialog.component';
+import { ResumeStore } from './resume.store';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,20 +22,21 @@ import { AftersaveDialogComponent } from '../components/dialog/aftersave-dialog/
 export class WorkspaceContext {
   profileCard!: any;
   componentsReferences = Array<ComponentRef<any>>();
-  resume: WritableSignal<ResumeModel> = signal({
-    profileImageMetadataId: null,
-    backgroundImageMetadataId: null,
-    title: null,
-    ownerId: null,
-    components: [],
-  });
+  // resume: WritableSignal<ResumeModel> = signal({
+  //   profileImageMetadataId: null,
+  //   backgroundImageMetadataId: null,
+  //   title: null,
+  //   ownerId: null,
+  //   components: [],
+  // });
   // resumeProfileFile: WritableSignal<FormData | null> = signal(null);
   // backgroundProfileFile: WritableSignal<string | null> = signal(null);
 
   elementsUpdated$: BehaviorSubject<any> = new BehaviorSubject(null);
   elementDeleted$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private store = inject(ResumeStore);
 
-  constructor(public dialog: MatDialog, private resumeService: ResumeService) {}
+  constructor(public dialog: MatDialog, private resumeService: ResumeService, private authService: AuthenticationService) {}
 
   addElement(itemType: WorkspaceItemType) {
     this.elementsUpdated$.next(itemType);
@@ -43,7 +47,6 @@ export class WorkspaceContext {
   }
 
   onSave() {
-    console.log(this.resume());
     let valid = true;
     this.componentsReferences.forEach((c) => {
       valid = c.instance.valid && valid;
@@ -53,7 +56,14 @@ export class WorkspaceContext {
       let dialogRef = this.dialog.open(OnsaveDialogComponent);
       dialogRef.afterClosed().subscribe((result) => {
         if (result === 'Ok'){  
-          this.resumeService.addResume(this.resume()).subscribe(data =>{
+          const payload = <ResumeModel>{
+            ownerId: this.authService.userValue?.id,
+            backgroundImageMetadataName: this.store.backgroundImageMetadataName(),
+            profileImageMetadataName: this.store.profileImageMetadataName(),
+            title: this.store.title(),
+            components: this.store.components()
+          }
+          this.resumeService.addResume(payload).subscribe(data =>{
             this.dialog.open(AftersaveDialogComponent, {data:{id: data.resumeId}});
           });
         } 

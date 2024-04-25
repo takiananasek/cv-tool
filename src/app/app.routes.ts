@@ -9,7 +9,8 @@ import { AuthGuard } from './helpers/authGuard';
 export const routes: Routes = [
     {path: 'workspace', component: WorkspaceComponent, providers: [ToastrModule], canActivate: [AuthGuard]},
     {path: 'home', component: MainPageComponent},
-    {path: 'resume/:id', component: ResumeViewComponent, canActivate: [AuthGuard]},
+    {path: 'resume/:id', component: ResumeViewComponent},
     {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
-    {path: '**', component: MainPageComponent},
+    {path: '**', redirectTo: 'home'},
+    {path: '', pathMatch: 'full', redirectTo: 'home'}
 ];

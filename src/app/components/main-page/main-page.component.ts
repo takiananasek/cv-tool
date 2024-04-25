@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ExternalAuth } from '../../models/externalAuth';
 import { AuthenticationService } from '../../services/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-main-page',
@@ -31,6 +32,10 @@ export class MainPageComponent implements OnInit{
     })
   }
 
+  openDocsInNewTab(){
+    window.open(environment.docsLink, '_blank');
+  }
+
   private decodeToken(token: string){
     return JSON.parse(atob(token.split(".")[1]));
   }
@@ -48,7 +53,6 @@ export class MainPageComponent implements OnInit{
   }
 
   private validateExternalAuth(externalAuth: ExternalAuth) {
-    console.log(externalAuth);
     this.authService
       .externalLogin('api/accounts/externallogin', externalAuth)
       .subscribe({
@@ -60,7 +64,7 @@ export class MainPageComponent implements OnInit{
          })
         },
         error: (err: HttpErrorResponse) => {
-          console.log(err);
+          console.log("Authentication failed");
         }
       });;
   }
