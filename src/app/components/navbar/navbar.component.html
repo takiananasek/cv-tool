@@ -1,20 +1,25 @@
-
 <nav class="bg-gray-900 text-gray-100 px-4">
-    <div class="w-[100%] flex flex-wrap items-center justify-between p-4">
+    <div class="w-[100%] flex flex-wrap gap-4 items-center justify-between p-4">
       <div class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="../../../assets/img/logo.png" class="h-8" alt="Resumeey Logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Resumeey Workspace</span>
+          <span (click)="navigateHome()" class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Resumeey Workspace</span>
       </div>
       <div class="w-full md:block md:w-auto">
         <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-900">
           <li>
-            <a href="/home" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" aria-current="page">Home</a>
+            <a [routerLink]="['/workspace']" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" aria-current="page">Create new Resume</a>
           </li>
           <li>
-            <a href="/docs" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" >Docs</a>
+            <a (click)="navigateHome()" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" aria-current="page">Home</a>
           </li>
           <li>
-            <a href="/dashboard" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" >Dashboard</a>
+            <a (click) = "openDocsInNewTab()" class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" >Docs</a>
+          </li>
+          <li>
+            <a [routerLink]="['/dashboard']"  class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" >Dashboard</a>
+          </li>
+          <li>
+            <a (click)="logout()"  class="block py-2 px-3 text-gray-900 bg-white rounded hover:bg-gray-100 md:bg-transparent md:text-gray-100 md:hover:bg-grey-100 md:hover:text-gray-800" >Logout</a>
           </li>
         </ul>
       </div>

@@ -8,7 +8,6 @@ import {
 import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspace-base-element.component';
 import { WorkspaceContext } from '../../../../services/workspace-context';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -19,12 +18,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  ComponentChildEntry,
-  ComponentEntry,
-  ResumeModel,
-} from '../../../../models/resume.model';
+import { ComponentEntry } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-list-element',
@@ -48,8 +44,7 @@ export class WorkspaceListElementComponent
   ID_COUNTER: number = 0;
 
   listForm!: FormGroup;
-
-  private formBuilder = inject(FormBuilder);
+  readonly store = inject(ResumeStore);
 
   get valid() {
     if (this.listForm) {
@@ -80,29 +75,16 @@ export class WorkspaceListElementComponent
   onChanges(): void {
     this.listForm.valueChanges.subscribe((val) => {
       if (this.listForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.ListElement,
-                  componentEntries: [
-                    { label: 'title', value: val.title, children: [] },
-                    { label: 'subtitle', value: val.subtitle, children: [] },
-                    ...this.mapListValues(),
-                  ],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ListElement,
+          componentEntries: [
+            { label: 'title', value: val.title, children: [] },
+            { label: 'subtitle', value: val.subtitle, children: [] },
+            ...this.mapListValues(),
+          ],
+        });
       }
     });
   }
@@ -144,15 +126,7 @@ export class WorkspaceListElementComponent
   }
 
   deleteElement(event: any) {
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-          components: r.components.filter(
-            (x) => x.componentDocumentId !== this.unique_key
-          ),
-        }
-    );
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 }

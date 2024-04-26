@@ -3,8 +3,8 @@ import { WorkspaceItemType } from "./workspaceItemType.model";
 export interface ResumeModel{
    // resumeId: number | null;
     ownerId: number | null;
-    profileImageMetadataId: string |null;
-    backgroundImageMetadataId : string |null;
+    profileImageMetadataName: string |null;
+    backgroundImageMetadataName : string |null;
     title: string | null;
     components: ResumeComponentModel[];
 }

@@ -1,15 +1,19 @@
 import {
   Component,
   ComponentRef,
+  OnDestroy,
+  OnInit,
   ViewChild,
   ViewChildren,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { Subscription } from 'rxjs';
 import { WorkspaceItem } from './elements/workspaceItem';
 import { WorkspaceItemType } from '../../models/workspaceItemType.model';
 import { WorkspaceProfileCardComponent } from './elements/workspace-profile-card/workspace-profile-card.component';
+import { ResumeStore } from '../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-element-list',
@@ -18,7 +22,7 @@ import { WorkspaceProfileCardComponent } from './elements/workspace-profile-card
   templateUrl: './workspace-element-list.component.html',
   styleUrl: './workspace-element-list.component.scss',
 })
-export class WorkspaceElementListComponent {
+export class WorkspaceElementListComponent implements OnInit, OnDestroy{
   @ViewChild('parent', { read: ViewContainerRef })
   viewContainerRef!: ViewContainerRef;
   @ViewChild('profileCard')
@@ -28,9 +32,11 @@ export class WorkspaceElementListComponent {
   elementAddSubscription!: Subscription;
   elementDeleteSubscription!: Subscription;
 
-  constructor(private workspaceContext: WorkspaceContext) {}
+  constructor(private workspaceContext: WorkspaceContext) {
+  }
 
   ngOnInit() {
+    this.workspaceContext.componentsReferences = [];
     this.elementAddSubscription =
       this.workspaceContext.elementsUpdated$.subscribe((workspaceItemType) =>
         this.add(workspaceItemType)
@@ -39,6 +45,11 @@ export class WorkspaceElementListComponent {
       this.workspaceContext.elementDeleted$.subscribe((unique_key) =>
         this.remove(unique_key)
       );
+  }
+
+  ngOnDestroy(){
+    this.elementDeleteSubscription.unsubscribe();
+    this.elementAddSubscription.unsubscribe();
   }
 
   ngAfterViewInit(){
@@ -55,8 +66,6 @@ export class WorkspaceElementListComponent {
       if(childComponent){
         childComponent.unique_key = ++this.child_unique_key;
         this.workspaceContext.componentsReferences.push(childComponentRef);
-        console.log("Added");
-        console.log(this.workspaceContext.componentsReferences);
       }
     }
   }
@@ -77,8 +86,6 @@ export class WorkspaceElementListComponent {
       this.workspaceContext.componentsReferences = this.workspaceContext.componentsReferences.filter(
         (x) => x.instance.unique_key !== key
       );
-      console.log("Deleted");
-        console.log(this.workspaceContext.componentsReferences);
     }
   }
 }

@@ -4,11 +4,12 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { ResumeViewComponent } from './components/resume-view/resume-view.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ToastrModule } from 'ngx-toastr';
-//TODO: Auth guard based on user context, session management 
+import { AuthGuard } from './helpers/authGuard';
+
 export const routes: Routes = [
-    {path: 'workspace', component: WorkspaceComponent, providers: [ToastrModule]},
+    {path: 'workspace', component: WorkspaceComponent, providers: [ToastrModule], canActivate: [AuthGuard]},
     {path: 'home', component: MainPageComponent},
-    {path: 'resume/:id', component: ResumeViewComponent},
-    {path: 'dashboard', component: DashboardComponent},
-    {path: '**', component: MainPageComponent},
+    {path: 'resume', component: ResumeViewComponent},
+    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+    {path: '**', redirectTo: 'home'}
 ];

@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResumeService } from '../../services/resume.service';
 import { environment } from '../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthenticationService } from '../../services/authentication.service';
+import { ClipboardService } from 'ngx-clipboard';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,25 +16,47 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
-
-  userId: number = 1;
-  resumes: WritableSignal<number[]> = signal([]);
+  resumes: WritableSignal<{id: number, title: string}[]> = signal([]);
 
   constructor(
-    private route: ActivatedRoute,
+    private clipboard: ClipboardService,
     private resumeService: ResumeService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService,
+    public authenticationService: AuthenticationService
   ) {}
 
   ngOnInit(){
-    this.resumeService.getUserResumes(this.userId).subscribe(
+    let userId = this.authenticationService.userValue?.id;
+    //if(!userId) this.router.navigate(['/']);
+    this.getResumes();
+  }
+
+  getResumes(){
+    let userId = this.authenticationService.userValue?.id;
+    this.resumeService.getUserResumes(Number(userId)).subscribe(
       (data) => {
-        this.resumes.set(data.ids);
+        this.resumes.set(data.resumes);
       }
     );
   }
 
-  getResumeLink(resume: number){
-    return `${environment.redirectUri}Resume/${resume}`;
+  deleteResume(id: number){
+    this.resumeService.deleteResume(id).subscribe(res => {
+      this.toast.success(
+        "Successfully deleted", ""
+      );
+      this.getResumes();
+    });
+  }
+
+  openResume(id: number){
+    let link = `${environment.redirectUri}resume?id=${id}`;
+    window.open(link, "_blank");
+  }
+
+  copyResumeLink(id: number){
+    let link = `${environment.redirectUri}resume?id=${id}`;
+    this.clipboard.copy(link);
   }
 }

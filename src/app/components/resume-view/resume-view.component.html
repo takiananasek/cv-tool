@@ -2,9 +2,9 @@
   <div class="md:flex items-end block md:fixed z-10 bg-black m-3 rounded-md shadow-lg">
     <nav class=" text-gray-100 ">
       <div class="w-[100%] flex flex-wrap items-center justify-between p-4">
-        <div class="flex items-center">
+        <div [routerLink]="['/home']" class="flex items-center">
           <img src="../../../assets/img/logo.png" class="h-8" alt="Resumeey Logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span  class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             Created with Resumeey</span>
         </div>
       </div>
@@ -13,7 +13,7 @@
 
   <div class="w-full mt-10 flex justify-center align-top">
     <div class="w-full flex flex-col md:flex-row gap-8 mx-[20%] my-12  justify-start align-center">
-      <app-profile-card-view [componentDataInput]="profileData" class="w-full md:w-[60%]"
+      <app-profile-card-view [profileImageUrl] = "profileImageUrl" [backgroundImageUrl]="backgroundImageUrl" [componentData]="profileData" class="w-full md:w-[60%]"
         #profileCard></app-profile-card-view>
       <div class="w-full ">
         <div #parent class="w-full flex-shrink">

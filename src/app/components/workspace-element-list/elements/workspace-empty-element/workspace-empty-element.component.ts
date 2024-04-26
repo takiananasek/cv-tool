@@ -16,20 +16,20 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './workspace-empty-element.component.html',
   styleUrl: './workspace-empty-element.component.scss',
 })
-export class WorkspaceEmptyElementComponent extends WorkspaceBaseElementComponent implements OnInit{
-
+export class WorkspaceEmptyElementComponent
+  extends WorkspaceBaseElementComponent
+  implements OnInit
+{
   constructor(public workspaceContext: WorkspaceContext) {
     super(workspaceContext);
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   deleteElement(event: any) {
     this.workspaceContext.deleteElement(this.unique_key);

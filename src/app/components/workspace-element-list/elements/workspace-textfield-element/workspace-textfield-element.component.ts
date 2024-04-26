@@ -12,8 +12,8 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-textfield-element',
@@ -35,6 +35,7 @@ export class WorkspaceTextfieldElementComponent
 {
   textFieldForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
+  readonly store = inject(ResumeStore);
 
   constructor(public workspaceContext: WorkspaceContext) {
     super(workspaceContext);
@@ -48,15 +49,7 @@ export class WorkspaceTextfieldElementComponent
   }
 
   deleteElement(event: any) {
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-          components: r.components.filter(
-            (x) => x.componentDocumentId !== this.unique_key
-          ),
-        }
-    );
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 
@@ -71,28 +64,15 @@ export class WorkspaceTextfieldElementComponent
   onChanges(): void {
     this.textFieldForm.valueChanges.subscribe((val) => {
       if (this.textFieldForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.TextFieldElement,
-                  componentEntries: [
-                    { label: 'title', value: val.title, children: [] },
-                    { label: 'text', value: val.text, children: [] },
-                  ],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.TextFieldElement,
+          componentEntries: [
+            { label: 'title', value: val.title, children: [] },
+            { label: 'text', value: val.text, children: [] },
+          ],
+        });
       }
     });
   }

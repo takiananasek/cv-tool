@@ -22,10 +22,9 @@ import {
 import {
   ComponentChildEntry,
   ComponentEntry,
-  ResumeComponentModel,
-  ResumeModel,
 } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-project-links',
@@ -51,6 +50,7 @@ export class WorkspaceProjectLinksComponent
   ID_COUNTER: number = 0;
   listForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
+  readonly store = inject(ResumeStore);
 
   get valid() {
     if (this.listForm) {
@@ -71,25 +71,12 @@ export class WorkspaceProjectLinksComponent
   onChanges(): void {
     this.listForm.valueChanges.subscribe((val) => {
       if (this.listForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.ProjectLinksElement,
-                  componentEntries: [...this.mapListValues()],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ProjectLinksElement,
+          componentEntries: [...this.mapListValues()],
+        });
       }
     });
   }
@@ -167,6 +154,7 @@ export class WorkspaceProjectLinksComponent
   }
 
   deleteElement(event: any) {
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 }

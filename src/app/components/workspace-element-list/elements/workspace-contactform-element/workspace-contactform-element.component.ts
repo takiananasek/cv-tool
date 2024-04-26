@@ -12,8 +12,8 @@ import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspa
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
+import { ResumeStore } from '../../../../services/resume.store';
 
 @Component({
   selector: 'app-workspace-contactform-element',
@@ -32,6 +32,7 @@ export class WorkspaceContactformElementComponent
   extends WorkspaceBaseElementComponent
   implements OnInit
 {
+  readonly store = inject(ResumeStore);
   contactForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
 
@@ -47,15 +48,7 @@ export class WorkspaceContactformElementComponent
   }
 
   deleteElement(event: any) {
-    this.workspaceContext.resume.update(
-      (r) =>
-        <ResumeModel>{
-          ownerId: r.ownerId,
-          components: r.components.filter(
-            (x) => x.componentDocumentId !== this.unique_key
-          ),
-        }
-    );
+    this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 
@@ -70,28 +63,15 @@ export class WorkspaceContactformElementComponent
   onChanges(): void {
     this.contactForm.valueChanges.subscribe((val) => {
       if (this.contactForm.valid) {
-        this.workspaceContext.resume.update(
-          (r) =>
-            <ResumeModel>{
-              ownerId: r.ownerId,
-              title: r.title,
-              backgroundImageMetadataId: r.backgroundImageMetadataId,
-              profileImageMetadataId: r.profileImageMetadataId,
-              components: [
-                ...r.components.filter(
-                  (c) => c.componentDocumentId !== this.unique_key
-                ),
-                {
-                  componentDocumentId: this.unique_key,
-                  componentType: WorkspaceItemType.ContactElement,
-                  componentEntries: [
-                    { label: 'phone', value: val.phone, children: [] },
-                    { label: 'email', value: val.email, children: [] },
-                  ],
-                },
-              ],
-            }
-        );
+        this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ContactElement,
+          componentEntries: [
+            { label: 'phone', value: val.phone, children: [] },
+            { label: 'email', value: val.email, children: [] },
+          ],
+        });
       }
     });
   }

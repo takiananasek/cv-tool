@@ -3,4 +3,6 @@ export const environment = {
     baseUrl: 'cvtoolappservice.azurewebsites.net',
     redirectUri: 'http://localhost:4200/',
     postLogoutRedirectUri: 'http://localhost:4200/',
+    docsLink: 'https://nina.gitbook.io/resumeey-docs',
+    baseFilePath: ''
   };
