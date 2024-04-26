@@ -1,6 +1,8 @@
 import {
   Component,
   ComponentRef,
+  OnDestroy,
+  OnInit,
   ViewChild,
   ViewChildren,
   ViewContainerRef,
@@ -20,7 +22,7 @@ import { ResumeStore } from '../../services/resume.store';
   templateUrl: './workspace-element-list.component.html',
   styleUrl: './workspace-element-list.component.scss',
 })
-export class WorkspaceElementListComponent {
+export class WorkspaceElementListComponent implements OnInit, OnDestroy{
   @ViewChild('parent', { read: ViewContainerRef })
   viewContainerRef!: ViewContainerRef;
   @ViewChild('profileCard')
@@ -34,6 +36,7 @@ export class WorkspaceElementListComponent {
   }
 
   ngOnInit() {
+    this.workspaceContext.componentsReferences = [];
     this.elementAddSubscription =
       this.workspaceContext.elementsUpdated$.subscribe((workspaceItemType) =>
         this.add(workspaceItemType)
@@ -42,6 +45,11 @@ export class WorkspaceElementListComponent {
       this.workspaceContext.elementDeleted$.subscribe((unique_key) =>
         this.remove(unique_key)
       );
+  }
+
+  ngOnDestroy(){
+    this.elementDeleteSubscription.unsubscribe();
+    this.elementAddSubscription.unsubscribe();
   }
 
   ngAfterViewInit(){

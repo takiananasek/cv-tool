@@ -21,12 +21,12 @@ export class AftersaveDialogComponent {
   ) {}
 
   openResume(): void {
-    let url = environment.redirectUri + 'resume/' + this.data.id;
+    let url = environment.redirectUri + 'resume?id=' + this.data.id;
     window.open(url, '_blank');
   }
 
   copyLinkToClipboard(): void {
-    let url = environment.redirectUri + 'resume/' + this.data.id;
+    let url = environment.redirectUri + 'resume?id=' + this.data.id;
     this.clipboardApi.copyFromContent(url);
   }
 

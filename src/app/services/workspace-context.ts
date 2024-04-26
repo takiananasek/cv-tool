@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { WorkspaceItemType } from '../models/workspaceItemType.model';
 import { ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,8 +32,8 @@ export class WorkspaceContext {
   // resumeProfileFile: WritableSignal<FormData | null> = signal(null);
   // backgroundProfileFile: WritableSignal<string | null> = signal(null);
 
-  elementsUpdated$: BehaviorSubject<any> = new BehaviorSubject(null);
-  elementDeleted$: BehaviorSubject<any> = new BehaviorSubject(null);
+  elementsUpdated$: Subject<any> = new Subject();
+  elementDeleted$: Subject<any> = new Subject();
   private store = inject(ResumeStore);
 
   constructor(public dialog: MatDialog, private resumeService: ResumeService, private authService: AuthenticationService) {}

@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit{
 
   ngOnInit(){
     let userId = this.authenticationService.userValue?.id;
-    if(!userId) this.router.navigate(['/']);
+    //if(!userId) this.router.navigate(['/']);
     this.getResumes();
   }
 
@@ -51,12 +51,12 @@ export class DashboardComponent implements OnInit{
   }
 
   openResume(id: number){
-    let link = `${environment.redirectUri}resume/${id}`;
+    let link = `${environment.redirectUri}resume?id=${id}`;
     window.open(link, "_blank");
   }
 
   copyResumeLink(id: number){
-    let link = `${environment.redirectUri}resume/${id}`;
+    let link = `${environment.redirectUri}resume?id=${id}`;
     this.clipboard.copy(link);
   }
 }

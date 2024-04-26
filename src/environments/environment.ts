@@ -5,5 +5,5 @@ export const environment = {
     redirectUri: 'http://localhost:4200/',
     postLogoutRedirectUri: 'http://localhost:4200/',
     docsLink: 'https://nina.gitbook.io/resumeey-docs',
-    baseFilePath: ''
+    baseFilePath: 'https://nina-apps-public-storage.s3.eu-north-1.amazonaws.com/'
   };

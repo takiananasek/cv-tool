@@ -12,11 +12,11 @@ declare var google: any;
 })
 export class AuthenticationService {
   serviceName = 'ExternalAuth';
-  private user: WritableSignal<User | null> = signal(null);
+  public user: WritableSignal<User | null> = signal(null);
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public get userValue() {
+  public get userValue(){
     return this.user();
   }
 
@@ -42,13 +42,19 @@ export class AuthenticationService {
     this.http
       .post<any>(
         `${environment.baseUrl}${this.serviceName}/revokeToken`,
-        {},
-        { withCredentials: true }
+        {token: localStorage.getItem("refreshToken"), userId: this.userValue?.id}
       )
       .subscribe();
     this.stopRefreshTokenTimer();
     this.user.set(null);
     this.router.navigate(['/login']);
+  }
+
+  validateSession(){
+    return this.http
+      .post<User>(
+        `${environment.baseUrl}${this.serviceName}/validateSession`,{}
+      ).pipe(map(data => data));
   }
 
   refreshToken() {
