@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { Component, OnInit, inject } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,11 +13,11 @@ import { MatInputModule } from '@angular/material/input';
 import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspace-base-element.component';
 import { WorkspaceContext } from '../../../../services/workspace-context';
 import { MatIconModule } from '@angular/material/icon';
-import { ResumeModel } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
 import { FileInputType } from '../../../../models/fileInputType';
 import { ResumeStore } from '../../../../services/resume.store';
+import { ResumeComponentModel } from '../../../../models/resume.model';
 
 @Component({
   selector: 'app-workspace-profile-card',
@@ -29,15 +29,16 @@ import { ResumeStore } from '../../../../services/resume.store';
     TextFieldModule,
     MatIconModule,
     ReactiveFormsModule,
-    FileUploadComponent
+    FileUploadComponent,
   ],
   templateUrl: './workspace-profile-card.component.html',
   styleUrl: './workspace-profile-card.component.scss',
 })
 export class WorkspaceProfileCardComponent
   extends WorkspaceBaseElementComponent
-  implements OnInit
+  implements OnInit, OnChanges
 {
+  @Input() profileCardData!: ResumeComponentModel;
   fileName = '';
   profileForm!: FormGroup;
   private formBuilder = inject(FormBuilder);
@@ -57,6 +58,7 @@ export class WorkspaceProfileCardComponent
 
   ngOnInit(): void {
     this.unique_key = 0;
+
     this.profileForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
       jobTitle: new FormControl('', Validators.required),
@@ -67,27 +69,52 @@ export class WorkspaceProfileCardComponent
       componentDocumentId: 0,
       componentType: WorkspaceItemType.ProfileCardElement,
       componentEntries: []
-    })
+    });
     this.onChanges();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.workspaceContext.isEdit) {
+      let name = this.workspaceContext.isEdit
+        ? this.profileCardData?.componentEntries.find(
+            (ce) => ce.label === 'name'
+          )?.value
+        : '';
+      let jobTitle = this.workspaceContext.isEdit
+        ? this.profileCardData?.componentEntries.find(
+            (ce) => ce.label === 'jobTitle'
+          )?.value
+        : '';
+      let description = this.workspaceContext.isEdit
+        ? this.profileCardData?.componentEntries.find(
+            (ce) => ce.label === 'description'
+          )?.value
+        : '';
+      this.profileForm?.patchValue({
+        name: name,
+        jobTitle: jobTitle,
+        description: description,
+      });
+    }
+  }
+
   onChanges(): void {
-    this.profileForm.valueChanges.subscribe((val) => {
+    this.profileForm?.valueChanges.subscribe((val) => {
       if (this.profileForm.valid) {
         this.store.deleteComponent(this.unique_key);
         this.store.addComponent({
           componentDocumentId: this.unique_key,
           componentType: WorkspaceItemType.ProfileCardElement,
           componentEntries: [
-            { label: 'name', value: val.name, children: [] },
-            { label: 'jobTitle', value: val.jobTitle, children: [] },
+            { label: 'name', value: val.name ?? '', children: [] },
+            { label: 'jobTitle', value: val.jobTitle ?? '', children: [] },
             {
               label: 'description',
-              value: val.description,
+              value: val.description ?? '',
               children: [],
             },
           ],
-        },);
+        });
       }
     });
   }
@@ -98,15 +125,14 @@ export class WorkspaceProfileCardComponent
   }
 
   onFileSelected(event: any) {
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
 
     if (file) {
+      this.fileName = file.name;
 
-        this.fileName = file.name;
+      const formData = new FormData();
 
-        const formData = new FormData();
-
-        formData.append("thumbnail", file);
+      formData.append('thumbnail', file);
     }
-}
+  }
 }

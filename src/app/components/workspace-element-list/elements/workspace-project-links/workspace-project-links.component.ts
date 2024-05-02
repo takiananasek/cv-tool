@@ -65,6 +65,30 @@ export class WorkspaceProjectLinksComponent
 
   ngOnInit(): void {
     this.listForm = this.formBuilder.group({});
+    if (this.workspaceContext.isEdit && this.editData) {
+      console.log(this.editData);
+      let componentEntries = this.editData.model.componentEntries;
+      let listItems: Array<{ id: number; title: string; description: string; url: string }> = [];
+      componentEntries.forEach(ce => {
+        this.listForm.addControl(
+          this.ID_COUNTER.toString(),
+          new FormGroup({
+            title: new FormControl((ce.children.find(ch => ch.label === 'title')?.value.toString() ?? ''), Validators.required),
+            description: new FormControl((ce.children.find(ch => ch.label === 'description')?.value.toString() ?? ''), Validators.required),
+            url: new FormControl((ce.children.find(ch => ch.label === 'url')?.value.toString() ?? ''), Validators.required),
+          })
+        );
+        listItems.push({
+          id: Number(ce.label.split("ProjectEntry").pop()),
+          title: ce.children.find(ch => ch.label === 'title')?.value.toString() ?? '',
+          description: ce.children.find(ch => ch.label === 'description')?.value.toString() ?? '',
+          url: ce.children.find(ch => ch.label === 'url')?.value.toString() ?? '',
+        })
+        this.ID_COUNTER++;
+      })
+      this.listItems.set(listItems);
+
+    }
     this.onChanges();
   }
 
@@ -108,16 +132,6 @@ export class WorkspaceProjectLinksComponent
       });
     });
     return children;
-  }
-
-  toFormGroup(listEntries: { id: number; text: string }[]) {
-    const group: any = {};
-    group['title'] = new FormControl('', Validators.required);
-    group['subtitle'] = new FormControl('', Validators.required);
-    listEntries.forEach((entry) => {
-      group[entry.id] = new FormControl(entry.text || '', Validators.required);
-    });
-    return new FormGroup(group);
   }
 
   addProjectItem() {

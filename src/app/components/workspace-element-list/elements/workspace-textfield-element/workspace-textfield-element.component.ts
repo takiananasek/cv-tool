@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { ResumeStore } from '../../../../services/resume.store';
+import { ResumeComponentModel } from '../../../../models/resume.model';
 
 @Component({
   selector: 'app-workspace-textfield-element',
@@ -58,6 +59,21 @@ export class WorkspaceTextfieldElementComponent
       title: new FormControl('', Validators.required),
       text: new FormControl('', Validators.required),
     });
+    if (this.workspaceContext.isEdit && this.editData) {
+      let title = this.workspaceContext.isEdit
+        ? this.editData.model.componentEntries.find(
+            (ce) => ce.label === 'title'
+          )?.value
+        : '';
+      let text = this.workspaceContext.isEdit
+        ? this.editData.model.componentEntries.find((ce) => ce.label === 'text')
+            ?.value
+        : '';
+      this.textFieldForm?.patchValue({
+        title: title,
+        text: text,
+      });
+    }
     this.onChanges();
   }
 

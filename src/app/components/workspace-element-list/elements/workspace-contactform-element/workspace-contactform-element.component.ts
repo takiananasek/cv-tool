@@ -57,6 +57,21 @@ export class WorkspaceContactformElementComponent
       phone: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
     });
+    if (this.workspaceContext.isEdit && this.editData) {
+      let phone = this.workspaceContext.isEdit
+        ? this.editData.model.componentEntries.find(
+            (ce) => ce.label === 'phone'
+          )?.value
+        : '';
+      let email = this.workspaceContext.isEdit
+        ? this.editData.model.componentEntries.find((ce) => ce.label === 'email')
+            ?.value
+        : '';
+      this.contactForm?.patchValue({
+        phone: phone,
+        email: email,
+      });
+    }
     this.onChanges();
   }
 

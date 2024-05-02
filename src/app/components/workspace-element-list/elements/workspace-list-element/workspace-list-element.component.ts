@@ -68,7 +68,30 @@ export class WorkspaceListElementComponent
   }
 
   ngOnInit(): void {
-    this.listForm = this.toFormGroup(this.listItems());
+    if(this.workspaceContext.isEdit && this.editData){
+      let componentEntries = this.editData.model.componentEntries;
+      let title = componentEntries.find(ce => ce.label === 'title')?.value ?? '';
+      let subtitle = componentEntries.find(ce => ce.label === 'subtitle')?.value ?? '';
+      const group: any = {};
+      group['title'] = new FormControl(title, Validators.required);
+      group['subtitle'] = new FormControl(subtitle, Validators.required);
+      let listItems = componentEntries.filter(ce => ce.label !== 'title' && ce.label !== 'subtitle');
+      let listItemsTempl: Array<{ id: number; text: string }> = [];
+      listItems.forEach(li => {
+        let id = Number(li.label.split('listItem').pop());
+        group[id] = new FormControl(li.value, Validators.required);
+        listItemsTempl.push({
+          id:id,
+          text: li.value?.toString() ?? ''
+        })
+       this.ID_COUNTER++;
+      })
+      this.listForm = new FormGroup(group);
+      this.listItems.set(listItemsTempl);
+    }
+    else{
+      this.listForm = this.toFormGroup(this.listItems());
+    }
     this.onChanges();
   }
 

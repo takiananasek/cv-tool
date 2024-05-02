@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { WorkspaceItemType } from '../models/workspaceItemType.model';
-import { ResumeModel } from '../models/resume.model';
+import { ResumeComponentModel, ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave-dialog.component';
 import { InvalidFormDialogComponent } from '../components/dialog/invalid-form-dialog/invalid-form-dialog.component';
@@ -20,23 +20,21 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root',
 })
 export class WorkspaceContext {
+  isEdit: boolean = false;
+  profileEditData: any;
+  resumeId!: number;
   profileCard!: any;
   componentsReferences = Array<ComponentRef<any>>();
-  // resume: WritableSignal<ResumeModel> = signal({
-  //   profileImageMetadataId: null,
-  //   backgroundImageMetadataId: null,
-  //   title: null,
-  //   ownerId: null,
-  //   components: [],
-  // });
-  // resumeProfileFile: WritableSignal<FormData | null> = signal(null);
-  // backgroundProfileFile: WritableSignal<string | null> = signal(null);
 
   elementsUpdated$: Subject<any> = new Subject();
   elementDeleted$: Subject<any> = new Subject();
   private store = inject(ResumeStore);
 
-  constructor(public dialog: MatDialog, private resumeService: ResumeService, private authService: AuthenticationService) {}
+  constructor(
+    public dialog: MatDialog,
+    private resumeService: ResumeService,
+    private authService: AuthenticationService
+  ) {}
 
   addElement(itemType: WorkspaceItemType) {
     this.elementsUpdated$.next(itemType);
@@ -55,18 +53,37 @@ export class WorkspaceContext {
     if (valid) {
       let dialogRef = this.dialog.open(OnsaveDialogComponent);
       dialogRef.afterClosed().subscribe((result) => {
-        if (result === 'Ok'){  
-          const payload = <ResumeModel>{
-            ownerId: this.authService.userValue?.id,
-            backgroundImageMetadataName: this.store.backgroundImageMetadataName(),
-            profileImageMetadataName: this.store.profileImageMetadataName(),
-            title: this.store.title(),
-            components: this.store.components()
+        if (result === 'Ok') {
+          if (!this.isEdit) {
+            const payload = <ResumeModel>{
+              ownerId: this.authService.userValue?.id,
+              backgroundImageMetadataName:
+                this.store.backgroundImageMetadataName(),
+              profileImageMetadataName: this.store.profileImageMetadataName(),
+              title: this.store.title(),
+              components: this.store.components(),
+            };
+            this.resumeService.addResume(payload).subscribe((data) => {
+              this.dialog.open(AftersaveDialogComponent, {
+                data: { id: data.resumeId },
+              });
+            });
+          } else {
+            const payload = <ResumeModel>{
+              id: this.resumeId,
+              backgroundImageMetadataName:
+                this.store.backgroundImageMetadataName(),
+              profileImageMetadataName: this.store.profileImageMetadataName(),
+              title: this.store.title(),
+              components: this.store.components(),
+            };
+            this.resumeService.editResume(payload).subscribe((data) => {
+              this.dialog.open(AftersaveDialogComponent, {
+                data: { id: data.resumeId },
+              });
+            });
           }
-          this.resumeService.addResume(payload).subscribe(data =>{
-            this.dialog.open(AftersaveDialogComponent, {data:{id: data.resumeId}});
-          });
-        } 
+        }
       });
     } else {
       let dialogRef = this.dialog.open(InvalidFormDialogComponent);

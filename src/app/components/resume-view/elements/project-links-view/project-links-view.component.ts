@@ -24,9 +24,9 @@ export class ProjectLinksViewComponent implements OnInit {
   ngOnInit(): void {
    this.componentData.componentEntries.map(ce=>{
      let item = {title: '', desc: '', url: ''}
-     item.title = ce.children.find(ch => ch.label === 'title')?.label ?? '';
-     item.desc = ce.children.find(ch => ch.label === 'description')?.label ?? '';
-     item.url = ce.children.find(ch => ch.label === 'url')?.label ?? '';
+     item.title = ce.children.find(ch => ch.label === 'title')?.value.toString() ?? '';
+     item.desc = ce.children.find(ch => ch.label === 'description')?.value.toString() ?? '';
+     item.url = ce.children.find(ch => ch.label === 'url')?.value.toString() ?? '';
       this.listItems.push(item);
    });
   }
