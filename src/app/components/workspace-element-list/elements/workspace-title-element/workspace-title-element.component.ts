@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { WorkspaceContext } from '../../../../services/workspace-context';
 import { WorkspaceBaseElementComponent } from '../workspace-base-element/workspace-base-element.component';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { ResumeStore } from '../../../../services/resume.store';
+import { ResumeComponentModel } from '../../../../models/resume.model';
 
 @Component({
   selector: 'app-workspace-title-element',
@@ -56,6 +57,16 @@ export class WorkspaceTitleElementComponent
       componentType: WorkspaceItemType.TitleElement,
       componentEntries: [],
     });
+    if (this.workspaceContext.isEdit && this.editData) {
+      let title = this.workspaceContext.isEdit
+        ? this.editData.model.componentEntries.find(
+            (ce) => ce.label === 'title'
+          )?.value
+        : '';
+      this.titleForm?.patchValue({
+        title: title,
+      });
+    }
     this.onChanges();
   }
 

@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "@ngrx/signals": "^17.2.0",
+    "@types/gsap": "^3.0.0",
+    "gsap": "^3.12.5",
     "ngx-clipboard": "^16.0.0",
     "ngx-cookie-service": "^17.1.0",
     "ngx-spinner": "^16.0.2",

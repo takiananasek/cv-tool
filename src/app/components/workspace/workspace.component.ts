@@ -22,6 +22,11 @@ import { CommonModule } from '@angular/common';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { MatDialog } from '@angular/material/dialog';
 import { InvalidFormDialogComponent } from '../dialog/invalid-form-dialog/invalid-form-dialog.component';
+import { ActivatedRoute } from '@angular/router';
+import { ResumeService } from '../../services/resume.service';
+import { map } from 'rxjs';
+import { ResumeComponentModel } from '../../models/resume.model';
+import { WorkspaceItemType } from '../../models/workspaceItemType.model';
 
 @Component({
   selector: 'app-workspace',
@@ -51,16 +56,50 @@ export class WorkspaceComponent implements AfterViewInit {
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
+  resumeId!: number;
+  profileCardData!: ResumeComponentModel;
+  componentData!: ResumeComponentModel[];
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     public workspaceContext: WorkspaceContext,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private resumeService: ResumeService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnInit() {
+    if (
+      this.route.snapshot.queryParams['id'] &&
+      this.route.snapshot.queryParams['edit']
+    ) {
+      this.workspaceContext.isEdit = true;
+      this.resumeId = Number(this.route.snapshot.queryParams['id']);
+      this.workspaceContext.resumeId = this.resumeId;
+
+      this.resumeService
+        .getResume(this.resumeId)
+        .pipe(
+          map((data) => {
+            this.componentData = data.components
+              .filter(
+                (c) => c.componentType !== WorkspaceItemType.ProfileCardElement
+              )
+              .sort((a, b) => a.componentDocumentId - b.componentDocumentId);
+            this.profileCardData = data.components.filter(
+              (c) => c.componentType === WorkspaceItemType.ProfileCardElement
+            )[0];
+          })
+        )
+        .subscribe();
+    } else {
+      this.workspaceContext.isEdit = false;
+    }
   }
 
   ngAfterViewInit() {

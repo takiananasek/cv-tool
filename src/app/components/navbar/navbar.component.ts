@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationExtras, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -27,6 +27,16 @@ export class NavbarComponent {
       this.router.navigate(['/home']);
     }
   }
+
+  navigateWorkspace(){
+    const navigationExtras: NavigationExtras = {
+      skipLocationChange: true
+    };
+    this.router.navigate(['/Refresh'], navigationExtras).then(() => {
+      this.router.navigate(['/workspace']);
+    });
+}
+
 
   openDocsInNewTab(){
     window.open(environment.docsLink, '_blank');

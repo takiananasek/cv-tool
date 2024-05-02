@@ -60,7 +60,6 @@ export class ResumeViewComponent {
     this.resumeService.getResume(this.resumeId)
     .subscribe((data) => {
       this.resumeData = data;
-      console.log(this.resumeData);
       this.profileData =
         this.resumeData.components.find(
           (c) => c.componentType == WorkspaceItemType.ProfileCardElement
@@ -71,7 +70,7 @@ export class ResumeViewComponent {
         ) ?? <ResumeComponentModel>{};
         this.backgroundImageUrl = this.getFilePath(data.backgroundImageMetadataName);
         this.profileImageUrl = this.getFilePath(data.profileImageMetadataName);
-        this.resumeData.components.map((c) => {
+        this.resumeData.components.sort((a,b) => a.componentDocumentId - b.componentDocumentId).map((c) => {
           if (c.componentType !== WorkspaceItemType.ProfileCardElement) {
             let workspaceItem = new ResumeViewItem(c.componentType);
             const componentRef = this.viewContainerRef?.createComponent(

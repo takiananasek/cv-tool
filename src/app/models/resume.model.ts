@@ -1,7 +1,7 @@
 import { WorkspaceItemType } from "./workspaceItemType.model";
 
 export interface ResumeModel{
-   // resumeId: number | null;
+    id: number | null;
     ownerId: number | null;
     profileImageMetadataName: string |null;
     backgroundImageMetadataName : string |null;

@@ -55,6 +55,12 @@ export class DashboardComponent implements OnInit{
     window.open(link, "_blank");
   }
 
+  openEditResume(id: number){
+    let link = `${environment.redirectUri}workspace?id=${id}&edit=true`;
+    window.open(link, '_blank');
+  }
+
+
   copyResumeLink(id: number){
     let link = `${environment.redirectUri}resume?id=${id}`;
     this.clipboard.copy(link);

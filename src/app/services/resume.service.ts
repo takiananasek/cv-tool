@@ -47,6 +47,16 @@ export class ResumeService {
       );
   }
 
+  editResume(resume: ResumeModel): Observable<{resumeId: number}> {
+    return this.http
+      .post<{resumeId: number}>(`${environment.baseUrl}${this.serviceName}/edit/`, resume)
+      .pipe(
+        map((response) => {
+          return response;
+        })
+      );
+  }
+
   addResume(resume: ResumeModel): Observable<{resumeId: number}> {
     return this.http
       .post<{resumeId: number}>(`${environment.baseUrl}${this.serviceName}/add/`, resume)
