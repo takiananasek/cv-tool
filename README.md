@@ -15,8 +15,6 @@ Customizable Components: Pick and choose from different sections like personal i
 
 Instant Preview: After saving, your resume config will be translated into a share'able HTML page and will be ready for sharing with your contacts.
 
-Workspace: Your workspace is your resume hub. Currently, Workspace allows to configure and add a resume. User dashboard will allow you to delete your resumes that are no longer valid. Upload functionality has been planned to be added in the future.
-
 Database Storage: Your completed resumes are securely stored in the database. No need to worry about losing your work.
 
 Shareable HTML: Once your resume is ready, get a unique link to share it. Simple and easy sharing with potential employers and recruiters.
