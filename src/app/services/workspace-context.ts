@@ -1,13 +1,13 @@
 import {
   ComponentRef,
   Injectable,
-  WritableSignal,
+  Signal,
+  computed,
   inject,
-  signal,
 } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { WorkspaceItemType } from '../models/workspaceItemType.model';
-import { ResumeComponentModel, ResumeModel } from '../models/resume.model';
+import { ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave-dialog.component';
 import { InvalidFormDialogComponent } from '../components/dialog/invalid-form-dialog/invalid-form-dialog.component';
@@ -29,6 +29,8 @@ export class WorkspaceContext {
   elementsUpdated$: Subject<any> = new Subject();
   elementDeleted$: Subject<any> = new Subject();
   private store = inject(ResumeStore);
+  backgroundImageMetadataName: Signal<string|null> = computed(() => this.store.backgroundImageMetadataName());
+  profileImageMetadataName: Signal<string|null> = computed(() => this.store.profileImageMetadataName());
 
   constructor(
     public dialog: MatDialog,
@@ -42,6 +44,15 @@ export class WorkspaceContext {
 
   deleteElement(unique_key: number) {
     this.elementDeleted$.next(unique_key);
+  }
+
+  reset(){
+    this.profileCard = null;
+    this.componentsReferences = [];
+    this.isEdit = false;
+    this.profileEditData = null;
+    this.store.updateProfileIMageMetadataName(null);
+    this.store.updateBackgroundImageMetadataName(null);
   }
 
   onSave() {

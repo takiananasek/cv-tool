@@ -88,6 +88,17 @@ export class WorkspaceListElementComponent
       })
       this.listForm = new FormGroup(group);
       this.listItems.set(listItemsTempl);
+
+      this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ListElement,
+          componentEntries: [
+            { label: 'title', value: title, children: [] },
+            { label: 'subtitle', value: subtitle, children: [] },
+            ...this.mapListValues(),
+          ],
+        });
     }
     else{
       this.listForm = this.toFormGroup(this.listItems());

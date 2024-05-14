@@ -54,21 +54,16 @@ export class OnsaveDialogComponent implements OnInit {
     this.titleForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
     });
+    if(this.workspaceContext.isEdit){
+      this.titleForm.patchValue({
+        title: this.store.title()
+      })
+    }
   }
 
   onOkClick(): void {
     if (this.titleForm.valid) {
       this.store.updateTitle(this.titleForm.value.title);
-      // this.workspaceContext.resume.update(
-      //   (r) =>
-      //     <ResumeModel>{
-      //       ownerId: r.ownerId,
-      //       backgroundImageMetadataId: r.backgroundImageMetadataId,
-      //       title: this.titleForm.value.title,
-      //       profileImageMetadataId: r.profileImageMetadataId,
-      //       components: [...r.components],
-      //     }
-      // );
       this.dialogRef.close('Ok');
     }
   }

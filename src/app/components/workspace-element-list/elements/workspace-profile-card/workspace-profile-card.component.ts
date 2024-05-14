@@ -1,5 +1,5 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -64,13 +64,12 @@ export class WorkspaceProfileCardComponent
       jobTitle: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
     });
-
+    this.onChanges();
     this.store.addComponent({
       componentDocumentId: 0,
       componentType: WorkspaceItemType.ProfileCardElement,
       componentEntries: []
     });
-    this.onChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

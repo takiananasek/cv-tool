@@ -6,6 +6,7 @@ import {
   ViewChild,
   WritableSignal,
   computed,
+  inject,
   signal,
 } from '@angular/core';
 import { WorkspaceElementListComponent } from '../workspace-element-list/workspace-element-list.component';
@@ -27,6 +28,7 @@ import { ResumeService } from '../../services/resume.service';
 import { map } from 'rxjs';
 import { ResumeComponentModel } from '../../models/resume.model';
 import { WorkspaceItemType } from '../../models/workspaceItemType.model';
+import { ResumeStore } from '../../services/resume.store';
 
 @Component({
   selector: 'app-workspace',
@@ -59,6 +61,7 @@ export class WorkspaceComponent implements AfterViewInit {
   resumeId!: number;
   profileCardData!: ResumeComponentModel;
   componentData!: ResumeComponentModel[];
+  readonly store = inject(ResumeStore);
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -86,6 +89,9 @@ export class WorkspaceComponent implements AfterViewInit {
         .getResume(this.resumeId)
         .pipe(
           map((data) => {
+            this.store.updateProfileIMageMetadataName(data.profileImageMetadataName ?? '');
+            this.store.updateBackgroundImageMetadataName(data.backgroundImageMetadataName ?? '');
+            this.store.updateTitle(data.title ?? '');
             this.componentData = data.components
               .filter(
                 (c) => c.componentType !== WorkspaceItemType.ProfileCardElement
@@ -123,5 +129,6 @@ export class WorkspaceComponent implements AfterViewInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.workspaceContext.reset()
   }
 }

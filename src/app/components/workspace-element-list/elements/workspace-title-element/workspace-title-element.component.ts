@@ -14,7 +14,6 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { ResumeStore } from '../../../../services/resume.store';
-import { ResumeComponentModel } from '../../../../models/resume.model';
 
 @Component({
   selector: 'app-workspace-title-element',
@@ -57,6 +56,7 @@ export class WorkspaceTitleElementComponent
       componentType: WorkspaceItemType.TitleElement,
       componentEntries: [],
     });
+    this.onChanges();
     if (this.workspaceContext.isEdit && this.editData) {
       let title = this.workspaceContext.isEdit
         ? this.editData.model.componentEntries.find(
@@ -67,7 +67,6 @@ export class WorkspaceTitleElementComponent
         title: title,
       });
     }
-    this.onChanges();
   }
 
   onChanges(): void {

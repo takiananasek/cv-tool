@@ -19,9 +19,10 @@ export class AuthGuard implements CanActivate {
                 map(result => {
                   if (result) {
                     this.authenticationService.user.set(result);
-                    return true; // Session validated, allow access
+                    this.authenticationService.startRefreshTokenTimer();
+                    return true;
                   } else {
-                    this.router.navigate(['/login']); // Session not validated, redirect to login page
+                    this.router.navigate(['/login']);
                     return false;
                   }
                 })

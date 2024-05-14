@@ -76,7 +76,7 @@ export class AuthenticationService {
 
   private refreshTokenTimeout?: any;
 
-  private startRefreshTokenTimer() {
+  startRefreshTokenTimer() {
     const jwtBase64 = this.userValue!.jwtToken!.split('.')[1];
     const jwtToken = JSON.parse(atob(jwtBase64));
     const expires = new Date(jwtToken.exp * 1000);

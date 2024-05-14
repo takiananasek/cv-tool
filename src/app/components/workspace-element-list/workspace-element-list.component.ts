@@ -1,24 +1,18 @@
 import {
   Component,
-  ComponentRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
-  ViewChildren,
   ViewContainerRef,
-  inject,
 } from '@angular/core';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { Subscription, map } from 'rxjs';
 import { WorkspaceItem } from './elements/workspaceItem';
 import { WorkspaceItemType } from '../../models/workspaceItemType.model';
 import { WorkspaceProfileCardComponent } from './elements/workspace-profile-card/workspace-profile-card.component';
-import { ResumeStore } from '../../services/resume.store';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ResumeService } from '../../services/resume.service';
 import { ResumeComponentModel } from '../../models/resume.model';
 
 @Component({
@@ -60,7 +54,6 @@ export class WorkspaceElementListComponent implements OnInit, OnDestroy, OnChang
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.workspaceContext.isEdit) {
-      console.log(this.componentData);
       if(this.componentData){
         this.workspaceContext.profileEditData = this.profileCardData;
         let id = 0;
