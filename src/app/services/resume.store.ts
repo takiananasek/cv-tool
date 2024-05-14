@@ -21,10 +21,10 @@ export const ResumeStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store) => ({
-    updateProfileIMageMetadataName(profileImageMetadataName: string): void {
+    updateProfileIMageMetadataName(profileImageMetadataName: string | null): void {
       patchState(store, { profileImageMetadataName });
     },
-    updateBackgroundImageMetadataName(backgroundImageMetadataName: string): void {
+    updateBackgroundImageMetadataName(backgroundImageMetadataName: string | null): void {
       patchState(store, (state) => ({ backgroundImageMetadataName }));
     },
     updateTitle(title: string): void {

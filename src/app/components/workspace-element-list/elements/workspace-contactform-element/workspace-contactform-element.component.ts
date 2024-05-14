@@ -57,6 +57,7 @@ export class WorkspaceContactformElementComponent
       phone: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
     });
+    this.onChanges();
     if (this.workspaceContext.isEdit && this.editData) {
       let phone = this.workspaceContext.isEdit
         ? this.editData.model.componentEntries.find(
@@ -72,7 +73,6 @@ export class WorkspaceContactformElementComponent
         email: email,
       });
     }
-    this.onChanges();
   }
 
   onChanges(): void {

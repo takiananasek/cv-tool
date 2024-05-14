@@ -65,8 +65,8 @@ export class WorkspaceProjectLinksComponent
 
   ngOnInit(): void {
     this.listForm = this.formBuilder.group({});
+    this.onChanges();
     if (this.workspaceContext.isEdit && this.editData) {
-      console.log(this.editData);
       let componentEntries = this.editData.model.componentEntries;
       let listItems: Array<{ id: number; title: string; description: string; url: string }> = [];
       componentEntries.forEach(ce => {
@@ -87,9 +87,13 @@ export class WorkspaceProjectLinksComponent
         this.ID_COUNTER++;
       })
       this.listItems.set(listItems);
-
+      this.store.deleteComponent(this.unique_key);
+        this.store.addComponent({
+          componentDocumentId: this.unique_key,
+          componentType: WorkspaceItemType.ProjectLinksElement,
+          componentEntries: [...this.mapListValues()],
+        });
     }
-    this.onChanges();
   }
 
   onChanges(): void {
