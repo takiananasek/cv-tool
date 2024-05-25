@@ -1,5 +1,5 @@
 declare var google: any;
-import { Component, NgZone, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, Inject, NgZone, OnInit, PLATFORM_ID, WritableSignal, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ExternalAuth } from '../../models/externalAuth';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -19,17 +19,25 @@ export class MainPageComponent implements OnInit{
   constructor(private authService: AuthenticationService, private router: Router, private ngZone:NgZone) {}
 
   ngOnInit(): void {
-    google.accounts.id.initialize({
-      client_id: environment.googleClientId,
-      callback: (resp:any) => this.handleLogin(resp)
-    });
-    google.accounts.id.renderButton(document.getElementById("google-btn"),{
-      theme:'filled_blue',
-      size:'large',
-      shape:'rectangle',
-      width:350,
+      const script = document.createElement('script');
+      script.src = 'https://apis.google.com/js/api.js';
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
 
-    })
+      script.onload = () => {
+        google.accounts.id.initialize({
+          client_id: environment.googleClientId,
+          callback: (resp:any) => this.handleLogin(resp)
+        });
+        google.accounts.id.renderButton(document.getElementById("google-btn"),{
+          theme:'filled_blue',
+          size:'large',
+          shape:'rectangle',
+          width:350,
+    
+        })
+      };
   }
 
   openDocsInNewTab(){
