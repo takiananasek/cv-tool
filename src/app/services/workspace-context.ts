@@ -10,11 +10,11 @@ import { WorkspaceItemType } from '../models/workspaceItemType.model';
 import { ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave-dialog.component';
-import { InvalidFormDialogComponent } from '../components/dialog/invalid-form-dialog/invalid-form-dialog.component';
 import { ResumeService } from './resume.service';
 import { AftersaveDialogComponent } from '../components/dialog/aftersave-dialog/aftersave-dialog.component';
 import { ResumeStore } from './resume.store';
 import { AuthenticationService } from './authentication.service';
+import { DynamicDialogComponent } from '../components/dialog/dynamic-dialog/dynamic-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -97,7 +97,12 @@ export class WorkspaceContext {
         }
       });
     } else {
-      let dialogRef = this.dialog.open(InvalidFormDialogComponent);
+      let dialogRef = this.dialog.open(DynamicDialogComponent,{
+        data: {
+          title: 'Failed to submit',
+          content: 'Fill in the required fields to continue.'
+        }
+      });
     }
   }
 }

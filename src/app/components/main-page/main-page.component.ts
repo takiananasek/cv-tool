@@ -5,6 +5,7 @@ import { ExternalAuth } from '../../models/externalAuth';
 import { AuthenticationService } from '../../services/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-main-page',
@@ -16,7 +17,7 @@ import { environment } from '../../../environments/environment';
 export class MainPageComponent implements OnInit{
   errorMessage: WritableSignal<string | null> = signal(null);
   showError: WritableSignal<boolean> = signal(false);
-  constructor(private authService: AuthenticationService, private router: Router, private ngZone:NgZone) {}
+  constructor(private authService: AuthenticationService, private toast: ToastService,  private router: Router, private ngZone:NgZone) {}
 
   ngOnInit(): void {
       const script = document.createElement('script');
@@ -72,6 +73,7 @@ export class MainPageComponent implements OnInit{
          })
         },
         error: (err: HttpErrorResponse) => {
+          this.toast.error("Error", "Authentication failed. Try again later.")
           console.log("Authentication failed");
         }
       });;

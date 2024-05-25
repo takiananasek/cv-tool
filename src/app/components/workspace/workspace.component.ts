@@ -22,13 +22,13 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { MatDialog } from '@angular/material/dialog';
-import { InvalidFormDialogComponent } from '../dialog/invalid-form-dialog/invalid-form-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../../services/resume.service';
 import { map } from 'rxjs';
 import { ResumeComponentModel } from '../../models/resume.model';
 import { WorkspaceItemType } from '../../models/workspaceItemType.model';
 import { ResumeStore } from '../../services/resume.store';
+import { DynamicDialogComponent } from '../dialog/dynamic-dialog/dynamic-dialog.component';
 
 @Component({
   selector: 'app-workspace',
@@ -122,8 +122,11 @@ export class WorkspaceComponent implements AfterViewInit {
   }
 
   openFailedDialog(): void {
-    const dialogRef = this.dialog.open(InvalidFormDialogComponent, {
-      data: {},
+    this.dialog.open(DynamicDialogComponent, {
+      data: {
+        title: 'Failed to submit',
+        content: 'Fill in the required fields to continue.'
+      }
     });
   }
 
