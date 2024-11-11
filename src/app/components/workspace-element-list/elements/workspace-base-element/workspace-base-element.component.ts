@@ -11,7 +11,7 @@ import { ResumeComponentModel } from '../../../../models/resume.model';
 })
 export class WorkspaceBaseElementComponent {
   public unique_key!: number;
-  public editData! : {id: number, model: ResumeComponentModel}
+  public editData! : {id: number, model: ResumeComponentModel} | null;
 
   constructor(workspaceContext: WorkspaceContext){
   }

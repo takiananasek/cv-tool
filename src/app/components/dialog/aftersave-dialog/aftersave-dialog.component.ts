@@ -17,7 +17,7 @@ export class AftersaveDialogComponent {
     public dialogRef: MatDialogRef<AftersaveDialogComponent>,
     private clipboardApi: ClipboardService,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: {id: number},
   ) {}
 
   openResume(): void {

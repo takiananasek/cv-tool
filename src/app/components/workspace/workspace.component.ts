@@ -51,7 +51,7 @@ import { DynamicDialogComponent } from '../dialog/dynamic-dialog/dynamic-dialog.
 export class WorkspaceComponent implements AfterViewInit {
   @ViewChild('snav') nav!: MatSidenav;
   opened: WritableSignal<boolean> = signal(false);
-  overflow: Signal<any> = computed(() => {
+  overflow: Signal<string> = computed(() => {
     if (this.opened()) return 'hidden';
     else return '';
   });

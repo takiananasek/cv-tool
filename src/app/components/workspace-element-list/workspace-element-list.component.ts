@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
+  ViewRef,
 } from '@angular/core';
 import { WorkspaceContext } from '../../services/workspace-context';
 import { Subscription, map } from 'rxjs';
@@ -26,7 +27,7 @@ export class WorkspaceElementListComponent implements OnInit, OnDestroy, OnChang
   @ViewChild('parent', { read: ViewContainerRef })
   viewContainerRef!: ViewContainerRef;
   @ViewChild('profileCard')
-  profileCardRef!: any;
+  profileCardRef!: WorkspaceProfileCardComponent;
 
   child_unique_key: number = 0;
   elementAddSubscription!: Subscription;
@@ -100,7 +101,7 @@ export class WorkspaceElementListComponent implements OnInit, OnDestroy, OnChang
       )[0];
 
       let vcrIndex: number = this.viewContainerRef.indexOf(
-        componentRef.hostView as any
+        componentRef.hostView as ViewRef
       );
       this.viewContainerRef.remove(vcrIndex);
 

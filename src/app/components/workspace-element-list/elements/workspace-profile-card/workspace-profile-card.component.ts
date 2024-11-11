@@ -118,20 +118,20 @@ export class WorkspaceProfileCardComponent
     });
   }
 
-  deleteElement(event: any) {
+  deleteElement() {
     this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.fileName = file.name;
-
-      const formData = new FormData();
-
-      formData.append('thumbnail', file);
+  onFileSelected(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if(inputElement.files && inputElement.files.length > 0){
+      const file: File = inputElement.files[0];
+      if (file) {
+        this.fileName = file.name;
+        const formData = new FormData();
+        formData.append('thumbnail', file);
+      }
     }
   }
 }

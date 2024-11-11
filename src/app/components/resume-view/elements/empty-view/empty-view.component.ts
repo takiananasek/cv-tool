@@ -9,4 +9,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmptyViewComponent implements OnInit {
   ngOnInit(): void {}
+
 }

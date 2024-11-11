@@ -4,5 +4,5 @@ export class User {
     loginProvider?: string;
     providerKey?: string;
     jwtToken?: string;
-    refreshToken?: string;
+    sessionId?: string;
 }

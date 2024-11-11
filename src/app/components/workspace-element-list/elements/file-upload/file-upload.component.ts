@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   Input,
   ViewChild,
 } from '@angular/core';
@@ -22,7 +23,7 @@ export class FileUploadComponent {
   @Input({ required: true })
   fileInputType!: FileInputType;
 
-  @ViewChild('input') input!: any;
+  @ViewChild('input') input!: ElementRef;
 
   constructor(
     private fileService: FileUploadService,
@@ -37,12 +38,15 @@ export class FileUploadComponent {
     }
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      this.fileService.uploadSingleFile(file, this.fileInputType);
+  onFileSelected(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement?.files && inputElement.files.length > 0) {
+      const file: File = inputElement.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        this.fileService.uploadSingleFile(file, this.fileInputType);
+      }
     }
   }
 }

@@ -113,27 +113,28 @@ export class WorkspaceProjectLinksComponent
     let componentEntries: Array<ComponentEntry> = [];
     let controlsKeys = Object.keys(this.listForm.controls);
     controlsKeys.forEach((controlKey) => {
-      let control: any = this.listForm.controls[controlKey];
+      let control = <FormGroup>this.listForm.controls[controlKey];
       let componentDataEntry: ComponentEntry = {
         label: `ProjectEntry${controlKey}`,
         value: null,
-        children: this.mapChildren(control.controls),
+        children: this.mapChildren(control.controls as { [key: string]: FormControl }),
       };
       componentEntries.push(componentDataEntry);
     });
     return componentEntries;
   }
 
-  mapChildren(controls: any) {
+  mapChildren(controls: { [key: string]: FormControl }) {
     let children: Array<ComponentChildEntry> = [];
-    [];
     let controlsKeys = Object.keys(controls);
     controlsKeys.forEach((key: string) => {
       let control = controls[key];
-      children.push(<ComponentChildEntry>{
-        label: key,
-        value: control.value,
-      });
+      if(control instanceof FormControl){
+        children.push(<ComponentChildEntry>{
+          label: key,
+          value: control.value,
+        });
+      }    
     });
     return children;
   }
@@ -171,7 +172,7 @@ export class WorkspaceProjectLinksComponent
     this.ID_COUNTER--;
   }
 
-  deleteElement(event: any) {
+  deleteElement() {
     this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }

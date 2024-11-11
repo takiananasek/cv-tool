@@ -5,7 +5,6 @@ import { ExternalAuth } from '../models/externalAuth';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
-declare var google: any;
 
 @Injectable({
   providedIn: 'root',
@@ -16,21 +15,19 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public get userValue(){
+  public get userValue() {
     return this.user();
   }
 
-  externalLogin(route: string, body: ExternalAuth) :Observable<any> {
-    return this.http.post(
-      `${environment.baseUrl}${this.serviceName}/externalLogin/`,
-      body
-    ).pipe(
-      map((user: User) => {
-        this.user.set(user);
-        this.startRefreshTokenTimer();
-        return user;
-      })
-    );;
+  externalLogin(body: ExternalAuth): Observable<User> {
+    return this.http
+      .post(`${environment.baseUrl}${this.serviceName}/externalLogin/`, body)
+      .pipe(
+        map((user: User) => {
+          this.user.set(user);
+          return user;
+        })
+      );
   }
 
   public signOutExternal = () => {
@@ -40,54 +37,20 @@ export class AuthenticationService {
 
   logout() {
     this.http
-      .post<any>(
-        `${environment.baseUrl}${this.serviceName}/revokeToken`,
-        {token: localStorage.getItem("refreshToken"), userId: this.userValue?.id}
+      .post<null>(`${environment.baseUrl}${this.serviceName}/logout`, {})
+      .pipe(
+        map((data) => {
+          this.user.set(null);
+          this.router.navigate(['/login']);
+        })
       )
       .subscribe();
-    this.stopRefreshTokenTimer();
-    this.user.set(null);
-    this.router.navigate(['/login']);
   }
 
-  validateSession(){
-    return this.http
-      .post<User>(
-        `${environment.baseUrl}${this.serviceName}/validateSession`,{}
-      ).pipe(map(data => data));
-  }
-
-  refreshToken() {
-    return this.http
-      .post(
-        `${environment.baseUrl}${this.serviceName}/refreshToken`,
-        {}
-      )
-      .pipe(
-        map((user: User) => {
-          this.user.set(user);
-          localStorage.setItem('token', user.jwtToken ?? "");
-          localStorage.setItem('refreshToken', user.refreshToken ?? "");
-          this.startRefreshTokenTimer();
-          return user;
-        })
-      );
-  }
-
-  private refreshTokenTimeout?: any;
-
-  startRefreshTokenTimer() {
-    const jwtBase64 = this.userValue!.jwtToken!.split('.')[1];
-    const jwtToken = JSON.parse(atob(jwtBase64));
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - 60 * 1000;
-    this.refreshTokenTimeout = setTimeout(
-      () => this.refreshToken().subscribe(),
-      timeout
+  validateSession() {
+    return this.http.post<User | null>(
+      `${environment.baseUrl}${this.serviceName}/validateSession`,
+      {}
     );
-  }
-
-  private stopRefreshTokenTimer() {
-    clearTimeout(this.refreshTokenTimeout);
   }
 }

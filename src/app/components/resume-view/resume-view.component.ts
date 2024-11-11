@@ -38,7 +38,7 @@ export class ResumeViewComponent {
   @ViewChild('parent', { static: true, read: ViewContainerRef })
   viewContainerRef!: ViewContainerRef;
   @ViewChild('profileCard')
-  profileCardRef!: any;
+  profileCardRef!: ProfileCardViewComponent;
   resumeData!: ResumeModel;
   profileData!: ResumeComponentModel;
   profileImageUrl: string = '';

@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
                 map(result => {
                   if (result) {
                     this.authenticationService.user.set(result);
-                    this.authenticationService.startRefreshTokenTimer();
                     return true;
                   } else {
                     this.router.navigate(['/login']);

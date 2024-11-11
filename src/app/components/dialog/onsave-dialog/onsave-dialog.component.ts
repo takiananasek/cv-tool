@@ -42,9 +42,7 @@ import { ResumeStore } from '../../../services/resume.store';
 export class OnsaveDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<OnsaveDialogComponent>,
-    private workspaceContext: WorkspaceContext,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+    private workspaceContext: WorkspaceContext) {}
 
   titleForm!: FormGroup;
   private formBuilder = inject(FormBuilder);

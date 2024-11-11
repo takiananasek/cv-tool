@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WorkspaceItemType } from '../models/workspaceItemType.model';
-import { ResumeModel } from '../models/resume.model';
+import { ResumeComponentModel, ResumeModel } from '../models/resume.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OnsaveDialogComponent } from '../components/dialog/onsave-dialog/onsave-dialog.component';
 import { ResumeService } from './resume.service';
@@ -15,19 +15,23 @@ import { AftersaveDialogComponent } from '../components/dialog/aftersave-dialog/
 import { ResumeStore } from './resume.store';
 import { AuthenticationService } from './authentication.service';
 import { DynamicDialogComponent } from '../components/dialog/dynamic-dialog/dynamic-dialog.component';
+import { FormControl } from '@angular/forms';
+import { WorkspaceProfileCardComponent } from '../components/workspace-element-list/elements/workspace-profile-card/workspace-profile-card.component';
+import { WorkspaceElementComponent } from '../components/workspace-element-list/elements/workspaceItem';
+import { ResumeViewElementComponent } from '../components/resume-view/elements/viewItem';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkspaceContext {
   isEdit: boolean = false;
-  profileEditData: any;
+  profileEditData: ResumeComponentModel | null = null;
   resumeId!: number;
-  profileCard!: any;
-  componentsReferences = Array<ComponentRef<any>>();
+  profileCard!: WorkspaceProfileCardComponent | null
+  componentsReferences = Array<ComponentRef<WorkspaceElementComponent>>();
 
-  elementsUpdated$: Subject<any> = new Subject();
-  elementDeleted$: Subject<any> = new Subject();
+  elementsUpdated$: Subject<WorkspaceItemType> = new Subject();
+  elementDeleted$: Subject<number> = new Subject();
   private store = inject(ResumeStore);
   backgroundImageMetadataName: Signal<string|null> = computed(() => this.store.backgroundImageMetadataName());
   profileImageMetadataName: Signal<string|null> = computed(() => this.store.profileImageMetadataName());
@@ -56,14 +60,14 @@ export class WorkspaceContext {
   }
 
   onSave() {
-    let valid = true;
+    let valid: boolean | undefined = true;
     this.componentsReferences.forEach((c) => {
       valid = c.instance.valid && valid;
     });
-    valid = valid && this.profileCard.valid;
+    valid = valid && this.profileCard?.valid;
     if (valid) {
       let dialogRef = this.dialog.open(OnsaveDialogComponent);
-      dialogRef.afterClosed().subscribe((result) => {
+      dialogRef.afterClosed().subscribe((result: string) => {
         if (result === 'Ok') {
           if (!this.isEdit) {
             const payload = <ResumeModel>{

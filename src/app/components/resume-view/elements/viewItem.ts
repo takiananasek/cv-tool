@@ -8,6 +8,14 @@ import { ProjectLinksViewComponent } from "./project-links-view/project-links-vi
 import { ContactViewComponent } from "./contact-view/contact-view.component";
 import { EmptyViewComponent } from "./empty-view/empty-view.component";
 
+export type ResumeViewElementComponent = ListViewComponent
+| TextfieldViewComponent
+| TitleViewComponent
+| ProfileCardViewComponent
+| ProjectLinksViewComponent
+| ContactViewComponent
+| EmptyViewComponent;
+
 export class ResumeViewItem{
     componentyTypeMapping = new Map([
         
@@ -20,7 +28,7 @@ export class ResumeViewItem{
         [WorkspaceItemType.Empty, EmptyViewComponent],
     ]);
 
-    component: Type<any>;
+    component: Type<ResumeViewElementComponent>;
 
     constructor(public itemType: WorkspaceItemType){
         this.component = this.componentyTypeMapping.get(itemType) ?? EmptyViewComponent;

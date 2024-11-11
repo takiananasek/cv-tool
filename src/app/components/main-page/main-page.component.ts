@@ -1,11 +1,18 @@
-declare var google: any;
-import { Component, Inject, NgZone, OnInit, PLATFORM_ID, WritableSignal, signal } from '@angular/core';
+import { Component, NgZone, OnInit, WritableSignal, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ExternalAuth } from '../../models/externalAuth';
 import { AuthenticationService } from '../../services/authentication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ToastService } from '../../services/toast.service';
+import { User } from '../../models/user';
+
+export interface GoogleAuthResponse {
+  clientId: string;
+  client_id: string;
+  credential: string;
+  select_by: string;
+}
 
 @Component({
   selector: 'app-main-page',
@@ -29,14 +36,13 @@ export class MainPageComponent implements OnInit{
       script.onload = () => {
         google.accounts.id.initialize({
           client_id: environment.googleClientId,
-          callback: (resp:any) => this.handleLogin(resp)
+          callback: (resp: google.accounts.id.CredentialResponse) => this.handleLogin(resp)
         });
-        google.accounts.id.renderButton(document.getElementById("google-btn"),{
-          theme:'filled_blue',
-          size:'large',
-          shape:'rectangle',
-          width:350,
-    
+        google.accounts.id.renderButton(<HTMLElement>document.getElementById("google-btn"),{
+          theme: 'filled_blue',
+          size: 'large',
+          width: 350,
+          type: 'standard'
         })
       };
   }
@@ -49,7 +55,7 @@ export class MainPageComponent implements OnInit{
     return JSON.parse(atob(token.split(".")[1]));
   }
 
-  handleLogin(response: any){
+  handleLogin(response: google.accounts.id.CredentialResponse){
     if(response){
       const payload = this.decodeToken(response.credential);
       sessionStorage.setItem("loggedInUser", JSON.stringify(payload));
@@ -63,18 +69,17 @@ export class MainPageComponent implements OnInit{
 
   private validateExternalAuth(externalAuth: ExternalAuth) {
     this.authService
-      .externalLogin('api/accounts/externallogin', externalAuth)
+      .externalLogin(externalAuth)
       .subscribe({
-        next: (res:any) => {
-          localStorage.setItem('token', res.jwtToken);
-          localStorage.setItem('refreshToken', res.refreshToken);
+        next: (res: User) => {
+          if(res.jwtToken) localStorage.setItem('token', res.jwtToken);
+          if(res.sessionId) localStorage.setItem('sessionId', res.sessionId);
          this.ngZone.run(() =>{
           this.router.navigate(['/workspace']);
          })
         },
         error: (err: HttpErrorResponse) => {
-          this.toast.error("Error", "Authentication failed. Try again later.")
-          console.log("Authentication failed");
+          this.toast.error("Error", "Authentication failed. Try again later.");
         }
       });;
   }

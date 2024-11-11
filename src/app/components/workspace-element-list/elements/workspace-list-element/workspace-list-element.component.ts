@@ -22,6 +22,13 @@ import { ComponentEntry } from '../../../../models/resume.model';
 import { WorkspaceItemType } from '../../../../models/workspaceItemType.model';
 import { ResumeStore } from '../../../../services/resume.store';
 
+
+type FormControlsObject = {
+  title: FormControl;
+  subtitle: FormControl;
+  [key: number]: FormControl;
+};
+
 @Component({
   selector: 'app-workspace-list-element',
   standalone: true,
@@ -58,7 +65,7 @@ export class WorkspaceListElementComponent
   }
 
   toFormGroup(listEntries: { id: number; text: string }[]) {
-    const group: any = {};
+    const group: FormControlsObject = <FormControlsObject>{};
     group['title'] = new FormControl('', Validators.required);
     group['subtitle'] = new FormControl('', Validators.required);
     listEntries.forEach((entry) => {
@@ -72,9 +79,11 @@ export class WorkspaceListElementComponent
       let componentEntries = this.editData.model.componentEntries;
       let title = componentEntries.find(ce => ce.label === 'title')?.value ?? '';
       let subtitle = componentEntries.find(ce => ce.label === 'subtitle')?.value ?? '';
-      const group: any = {};
-      group['title'] = new FormControl(title, Validators.required);
-      group['subtitle'] = new FormControl(subtitle, Validators.required);
+      const group: FormControlsObject = <FormControlsObject>{
+        title: new FormControl(title, Validators.required),
+        subtitle: new FormControl(subtitle, Validators.required)
+      };
+
       let listItems = componentEntries.filter(ce => ce.label !== 'title' && ce.label !== 'subtitle');
       let listItemsTempl: Array<{ id: number; text: string }> = [];
       listItems.forEach(li => {
@@ -159,7 +168,7 @@ export class WorkspaceListElementComponent
     this.listItems.set(this.listItems().filter((li) => li.id !== item.id));
   }
 
-  deleteElement(event: any) {
+  deleteElement() {
     this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }

@@ -14,27 +14,24 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   constructor(
-    private authenticationService: AuthenticationService,
     private spinner: NgxSpinnerService
   ) {}
   private totalRequests = 0;
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     this.totalRequests++;
     this.spinner.show();
-    const user = this.authenticationService.userValue;
-    const isLoggedIn = user?.jwtToken;
     const isApiUrl = request.url.startsWith(environment.baseUrl);
     const jwtToken = localStorage.getItem('token');
-    const refreshToken = localStorage.getItem('refreshToken');
+    const sessionId = localStorage.getItem('sessionId');
     if (isApiUrl) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${jwtToken}`,
-          RefreshToken: `${refreshToken}`,
+          SessionId: `${sessionId}`,
         },
       });
     }

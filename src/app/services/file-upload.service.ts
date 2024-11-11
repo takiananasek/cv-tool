@@ -9,6 +9,11 @@ import { FileInputType } from '../models/fileInputType';
 import { ResumeStore } from './resume.store';
 import { Observable, map } from 'rxjs';
 
+export interface UploadFileResponse{
+  key:string,
+  httpStatusCode: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,37 +23,25 @@ export class FileUploadService {
   serviceName = 'Files';
   readonly store = inject(ResumeStore);
   
-  uploadSingleFile(file: any, fileType: FileInputType) {
+  uploadSingleFile(file: File, fileType: FileInputType) {
     let fileToUpload = <File>file;
     const formData = new FormData();
     formData.append('file', fileToUpload);
 
     return this.http
-      .post(`${environment.baseUrl}${this.serviceName}/upload/`, formData, {
-        reportProgress: false,
-        observe: 'events',
-      }).subscribe((data:any) => {
-        if(data.body){
+      .post<UploadFileResponse>(`${environment.baseUrl}${this.serviceName}/upload/`, formData)
+      .subscribe((data: UploadFileResponse) => {
+        if(data){
           switch(fileType){
             case FileInputType.Profile:
-              this.store.updateProfileIMageMetadataName(data.body.key);
+              this.store.updateProfileIMageMetadataName(data.key);
               break;
             case FileInputType.Background: 
-            this.store.updateBackgroundImageMetadataName(data.body.key)
+            this.store.updateBackgroundImageMetadataName(data.key)
               break;
           }
           this.toastService.success('Successfully uploaded image', '')
         }
       });
-  }
-
-  getResumeFile(fileId: any): Observable<any> {
-    return this.http
-      .post<any>(`${environment.baseUrl}${this.serviceName}/getFileById/`, fileId)
-      .pipe(
-        map((response) => {
-          return response;
-        })
-      );
   }
 }

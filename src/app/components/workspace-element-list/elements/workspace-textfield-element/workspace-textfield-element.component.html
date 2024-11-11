@@ -1,6 +1,6 @@
 <form [formGroup] = "textFieldForm" class="pt-2">
   <button
-        (click)=deleteElement($event) mat-icon-button><mat-icon>delete</mat-icon></button>
+        (click)=deleteElement() mat-icon-button><mat-icon>delete</mat-icon></button>
     <mat-form-field class="w-full">
       <mat-label>Title</mat-label>
       <input formControlName="title" matInput placeholder="This is a sample title">

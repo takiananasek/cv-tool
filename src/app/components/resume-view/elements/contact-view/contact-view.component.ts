@@ -10,6 +10,9 @@ import { ResumeComponentModel } from '../../../../models/resume.model';
   styleUrl: './contact-view.component.scss'
 })
 export class ContactViewComponent implements OnInit{
+
+  unique_key!:number;
+
   @Input({required: true})
   componentData!: ResumeComponentModel;
   phone!: string | number | null | undefined;

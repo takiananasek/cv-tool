@@ -47,7 +47,7 @@ export class WorkspaceContactformElementComponent
     return false;
   }
 
-  deleteElement(event: any) {
+  deleteElement() {
     this.store.deleteComponent(this.unique_key);
     this.workspaceContext.deleteElement(this.unique_key);
   }

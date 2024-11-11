@@ -31,7 +31,9 @@ export class WorkspaceEmptyElementComponent
 
   ngOnInit(): void {}
 
-  deleteElement(event: any) {
+  valid: boolean = true;
+
+  deleteElement() {
     this.workspaceContext.deleteElement(this.unique_key);
   }
 }

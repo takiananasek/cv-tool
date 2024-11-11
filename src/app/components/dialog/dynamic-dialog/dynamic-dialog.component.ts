@@ -15,8 +15,8 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, Ma
   styleUrl: './dynamic-dialog.component.scss'
 })
 export class DynamicDialogComponent {
-  @Input() dialogContent: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DynamicDialogComponent>) { }
+  @Input() dialogContent: string = '';
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {title: string, content: string}, public dialogRef: MatDialogRef<DynamicDialogComponent>) { }
 
   onNoClick(): void {
     this.dialogRef.close();
